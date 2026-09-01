@@ -1,0 +1,106 @@
+<view class="page">
+  <view class="admin-nav">
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/home/home">订单</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/slots/slots">时间</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/stats/stats">统计</view>
+    <view class="nav-item active">设置</view>
+  </view>
+
+  <!-- 首页展示信息 -->
+  <view class="card">
+    <view class="card-title">首页展示信息</view>
+    <view class="form-item"><view class="form-label">服务名称</view><input class="form-input" data-field="serviceName" value="{{form.serviceName}}" bindinput="inputChange" /></view>
+    <view class="form-item"><view class="form-label">陪诊师名称</view><input class="form-input" data-field="escortName" value="{{form.escortName}}" bindinput="inputChange" /></view>
+    <view class="form-item"><view class="form-label">联系电话</view><input class="form-input" type="number" maxlength="11" data-field="phone" value="{{form.phone}}" bindinput="inputChange" /></view>
+    <view class="form-item"><view class="form-label">微信号</view><input class="form-input" placeholder="首页'微信联系'按钮使用" data-field="wechatId" value="{{form.wechatId}}" bindinput="inputChange" /></view>
+    <view class="form-item"><view class="form-label">客服链接</view><input class="form-input" placeholder="企业微信客服链接（选填，配置后优先跳转客服）" data-field="kfUrl" value="{{form.kfUrl}}" bindinput="inputChange" /></view>
+    <view class="form-item" style="align-items:flex-start;padding-top:26rpx;">
+      <view class="form-label">公告</view>
+      <textarea class="form-input" data-field="notice" value="{{form.notice}}" bindinput="inputChange" maxlength="500" auto-height style="min-height:120rpx;" />
+    </view>
+  </view>
+
+  <!-- 费用与定金 -->
+  <view class="card">
+    <view class="card-title">费用与定金</view>
+    <view class="form-item"><view class="form-label">服务价格(元)</view><input class="form-input" type="digit" data-field="servicePrice" value="{{form.servicePrice}}" bindinput="inputChange" /></view>
+    <view class="form-item">
+      <view class="form-label">定金方式</view>
+      <picker mode="selector" range="{{depositTypes}}" range-key="label" value="{{depositTypeIndex}}" bindchange="changeDepositType">
+        <view class="form-input picker">{{depositTypes[depositTypeIndex].label}}</view>
+      </picker>
+    </view>
+    <view class="form-item"><view class="form-label">{{depositTypeIndex === 0 ? '定金金额(元)' : '定金比例(%)'}}</view><input class="form-input" type="digit" data-field="depositValue" value="{{form.depositValue}}" bindinput="inputChange" /></view>
+  </view>
+
+  <!-- 工作时间段 -->
+  <view class="card">
+    <view class="card-title">工作时间段</view>
+    <view class="form-item">
+      <view class="form-label">开始时间</view>
+      <picker mode="time" value="{{form.workStart}}" bindchange="changeTime" data-field="workStart">
+        <view class="form-input picker">{{form.workStart}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <view class="form-label">结束时间</view>
+      <picker mode="time" value="{{form.workEnd}}" bindchange="changeTime" data-field="workEnd">
+        <view class="form-input picker">{{form.workEnd}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <view class="form-label">每段时长</view>
+      <picker mode="selector" range="{{slotOptions}}" value="{{slotIndex}}" bindchange="changeSlot">
+        <view class="form-input picker">{{slotOptions[slotIndex]}} 分钟</view>
+      </picker>
+    </view>
+    <view class="slot-preview" wx:if="{{slotPreview}}">{{slotPreview}}</view>
+  </view>
+
+  <!-- 候选医院 -->
+  <view class="card">
+    <view class="card-title">候选医院 <text class="sub">预约填单下拉选择，也可手输</text></view>
+    <view class="list-edit" wx:if="{{hospitals.length}}">
+      <view wx:for="{{hospitals}}" wx:key="*this" class="list-edit-item">
+        <text class="list-edit-name">{{item}}</text>
+        <text class="list-edit-del" bindtap="removeHospital" data-name="{{item}}">删除</text>
+      </view>
+    </view>
+    <view class="list-add">
+      <input class="form-input list-add-input" placeholder="输入医院名称后添加" value="{{newHospital}}" bindinput="inputHospital" />
+      <button class="list-add-btn" bindtap="addHospital">添加</button>
+    </view>
+  </view>
+
+  <!-- 备注快捷选项 -->
+  <view class="card">
+    <view class="card-title">备注快捷选项 <text class="sub">预约填单点选填入</text></view>
+    <view class="list-edit" wx:if="{{noteOptions.length}}">
+      <view wx:for="{{noteOptions}}" wx:key="*this" class="list-edit-item">
+        <text class="list-edit-name">{{item}}</text>
+        <text class="list-edit-del" bindtap="removeNote" data-name="{{item}}">删除</text>
+      </view>
+    </view>
+    <view class="list-add">
+      <input class="form-input list-add-input" placeholder="如：老人行动不便" value="{{newNote}}" bindinput="inputNote" />
+      <button class="list-add-btn" bindtap="addNote">添加</button>
+    </view>
+  </view>
+
+  <!-- 安全 -->
+  <view class="card">
+    <view class="card-title">安全</view>
+    <view class="form-item"><view class="form-label">新管理密码</view><input class="form-input" password placeholder="留空表示不修改" data-field="adminPassword" value="{{form.adminPassword}}" bindinput="inputChange" /></view>
+    <view class="bind-tip" wx:if="{{adminOpenids.length}}">
+      已绑定管理员微信：{{adminOpenids.length}} 个（该微信号可直接一键登录，无需密码）
+    </view>
+  </view>
+
+  <view class="save-row">
+    <button class="btn-primary" bindtap="save">保存设置</button>
+  </view>
+
+  <view class="logout-row">
+    <button class="btn-danger" bindtap="logout">退出管理端</button>
+  </view>
+</view>

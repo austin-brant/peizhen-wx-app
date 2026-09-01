@@ -1,0 +1,70 @@
+<view class="page" wx:if="{{order}}">
+  <view class="status-card">
+    <view class="status-title">{{statusText.text}}</view>
+    <view class="status-desc">{{statusDesc}}</view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="card">
+    <view class="card-title">服务进度</view>
+    <view class="timeline">
+      <view class="tl-item {{step.submit ? 'done' : ''}}">
+        <view class="tl-dot"></view>
+        <view class="tl-text">提交预约</view>
+      </view>
+      <view class="tl-line {{step.deposit ? 'done' : ''}}"></view>
+      <view class="tl-item {{step.deposit ? 'done' : ''}}">
+        <view class="tl-dot"></view>
+        <view class="tl-text">支付定金</view>
+      </view>
+      <view class="tl-line {{step.service ? 'done' : ''}}"></view>
+      <view class="tl-item {{step.service ? 'done' : ''}}">
+        <view class="tl-dot"></view>
+        <view class="tl-text">服务完成</view>
+      </view>
+      <view class="tl-line {{step.tail ? 'done' : ''}}"></view>
+      <view class="tl-item {{step.tail ? 'done' : ''}}">
+        <view class="tl-dot"></view>
+        <view class="tl-text">支付尾款</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 信息 -->
+  <view class="card">
+    <view class="card-title">预约信息</view>
+    <view class="info-row"><text>服务时间</text><text>{{order.date}} {{order.start}}-{{order.end}}</text></view>
+    <view class="info-row"><text>服务时长</text><text>{{order.durationHours}} 小时{{order.slotCount > 1 ? '（' + order.slotCount + '个时段）' : ''}}</text></view>
+    <view class="info-row"><text>就诊人</text><text>{{order.clientName}}</text></view>
+    <view class="info-row"><text>手机号</text><text>{{order.clientPhone}}</text></view>
+    <view class="info-row"><text>就诊医院</text><text>{{order.hospital}}</text></view>
+    <view class="info-row" wx:if="{{order.department}}"><text>科室</text><text>{{order.department}}</text></view>
+    <view class="info-row" wx:if="{{order.notes}}"><text>备注</text><text>{{order.notes}}</text></view>
+  </view>
+
+  <!-- 金额 -->
+  <view class="card">
+    <view class="card-title">费用明细</view>
+    <view class="money-row"><text>服务费用</text><text>¥{{order.price}}</text></view>
+    <view class="money-row"><text>已付定金</text><text class="done">-¥{{order.deposit}}</text></view>
+    <view class="money-row total" wx:if="{{!order.tailPaid && order.status !== 'cancelled'}}">
+      <text>待付尾款</text>
+      <text class="amount">¥{{tail}}</text>
+    </view>
+    <view class="money-row total" wx:if="{{order.tailPaid}}">
+      <text>尾款已付</text>
+      <text class="done">¥{{tail}}</text>
+    </view>
+  </view>
+
+  <view style="height: 160rpx;"></view>
+
+  <!-- 操作栏 -->
+  <view class="bottom-bar">
+    <button class="btn-primary" wx:if="{{!order.depositPaid && order.status !== 'cancelled'}}" bindtap="payDeposit">继续支付定金 ¥{{order.deposit}}</button>
+    <button class="btn-primary" wx:if="{{order.status === 'completed' && !order.tailPaid}}" bindtap="payTail">支付尾款 ¥{{tail}}</button>
+    <button class="btn-ghost" wx:if="{{order.status !== 'completed' && order.status !== 'finished' && order.status !== 'cancelled' && escortPhone}}" bindtap="callEscort">联系陪诊师</button>
+    <view style="height:20rpx;" wx:if="{{order.status !== 'completed' && order.status !== 'finished' && order.status !== 'cancelled' && order.depositPaid}}"></view>
+    <button class="btn-danger" wx:if="{{order.status === 'deposit_paid'}}" bindtap="cancelOrder">取消预约</button>
+  </view>
+</view>

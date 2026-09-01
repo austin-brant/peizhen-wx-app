@@ -1,0 +1,83 @@
+<view class="page">
+  <view class="card summary">
+    <view class="sum-row">
+      <text class="sum-label">服务时间</text>
+      <text class="sum-val">{{date}} {{start}} - {{end}}</text>
+    </view>
+    <view class="sum-row" wx:if="{{slotCount > 1}}">
+      <text class="sum-label">包含时段</text>
+      <text class="sum-val">{{slotCount}} 个连续时段（合并计费）</text>
+    </view>
+    <view class="sum-row">
+      <text class="sum-label">服务时长</text>
+      <text class="sum-val">{{durationText}}</text>
+    </view>
+    <view class="sum-row">
+      <text class="sum-label">服务费用</text>
+      <text class="sum-val">¥{{price}}</text>
+    </view>
+    <view class="sum-row">
+      <text class="sum-label">定金</text>
+      <text class="sum-val deposit">¥{{deposit}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="form-item">
+      <view class="form-label required">就诊人</view>
+      <input class="form-input" placeholder="请输入真实姓名" data-field="clientName" bindinput="inputChange" value="{{form.clientName}}" />
+    </view>
+    <view class="form-item">
+      <view class="form-label required">手机号</view>
+      <input class="form-input" type="number" maxlength="11" placeholder="用于接收订单信息" data-field="clientPhone" bindinput="inputChange" value="{{form.clientPhone}}" />
+    </view>
+    <view class="form-item" wx:if="{{hospitalNames.length > 1}}">
+      <view class="form-label required">就诊医院</view>
+      <picker mode="selector" range="{{hospitalNames}}" value="{{hospitalIndex}}" bindchange="changeHospital">
+        <view class="form-input picker {{hospitalIndex < 0 ? 'placeholder' : ''}}">
+          {{hospitalIndex >= 0 ? hospitalNames[hospitalIndex] : '请选择医院'}}
+        </view>
+      </picker>
+    </view>
+    <view class="form-item" wx:if="{{showCustomHospital || hospitalNames.length <= 1}}">
+      <view class="form-label required">就诊医院</view>
+      <input class="form-input" placeholder="请输入医院名称，如：协和医院" data-field="hospital" bindinput="inputChange" value="{{form.hospital}}" />
+    </view>
+    <view class="form-item">
+      <view class="form-label">科室</view>
+      <input class="form-input" placeholder="如：心内科（选填）" data-field="department" bindinput="inputChange" value="{{form.department}}" />
+    </view>
+    <view class="form-item" style="align-items:flex-start;padding-top:26rpx;">
+      <view class="form-label">备注</view>
+      <textarea class="form-input" placeholder="如有老人、行动不便、特殊需求等请说明" data-field="notes" bindinput="inputChange" value="{{form.notes}}" maxlength="200" auto-height style="min-height:120rpx;" />
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{noteOptions.length}}">
+    <view class="card-title">快捷备注 <text class="sub">点击填入</text></view>
+    <view class="note-chips">
+      <view
+        wx:for="{{noteOptions}}"
+        wx:key="*this"
+        class="note-chip {{form.notes.indexOf(item) >= 0 ? 'active' : ''}}"
+        bindtap="tapNoteOption"
+        data-opt="{{item}}">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="card agreement" bindtap="toggleAgree">
+    <view class="checkbox {{agree ? 'checked' : ''}}"></view>
+    <text>我已阅读并同意</text>
+    <text class="link" catchtap="showNotice">《预约须知》</text>
+  </view>
+
+  <view class="card" wx:if="{{showNotice}}" style="font-size:26rpx;color:#4b5563;line-height:1.7;">
+    <text>{{notice}}</text>
+  </view>
+
+  <view style="height: 160rpx;"></view>
+
+  <view class="bottom-bar">
+    <button class="btn-primary" loading="{{loading}}" bindtap="submit">确认预约，支付定金 ¥{{deposit}}</button>
+  </view>
+</view>

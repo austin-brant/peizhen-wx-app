@@ -1,0 +1,39 @@
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="admin-nav">
+    <view class="nav-item active">订单</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/slots/slots">时间</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/stats/stats">统计</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/settings/settings">设置</view>
+  </view>
+
+  <view class="card summary">
+    <view class="summary-title">本页概览</view>
+    <view class="summary-row">
+      <view class="summary-cell"><text class="num">{{summary.count}}</text><text class="label">订单</text></view>
+      <view class="summary-cell"><text class="num">{{summary.hours}}</text><text class="label">时长(小时)</text></view>
+      <view class="summary-cell"><text class="num">¥{{summary.amount}}</text><text class="label">金额</text></view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="filter-bar">
+      <view wx:for="{{filters}}" wx:key="key" class="filter-item {{filter === item.key ? 'active' : ''}}" bindtap="changeFilter" data-key="{{item.key}}">{{item.label}}</view>
+    </view>
+    <view wx:if="{{orders.length}}">
+      <view wx:for="{{orders}}" wx:key="id" class="order-row">
+        <view class="order-main">
+          <view class="order-time">{{item.date}} {{item.start}}-{{item.end}}</view>
+          <view class="order-info">{{item.hospital}} · {{item.clientName}} · {{item.clientPhone}}</view>
+          <view class="order-amount">¥{{item.price}}（定金¥{{item.deposit}}）</view>
+        </view>
+        <view class="order-side">
+          <view class="tag {{item.statusText.cls}}">{{item.statusText.text}}</view>
+          <button class="action-btn primary" wx:if="{{item.status === 'deposit_paid'}}" bindtap="completeOrder" data-id="{{item.id}}">标记完成</button>
+          <button class="action-btn danger" wx:if="{{item.status === 'pending' || item.status === 'deposit_paid'}}" bindtap="cancelOrder" data-id="{{item.id}}">取消</button>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:else>暂无订单</view>
+  </view>
+</view>

@@ -1,0 +1,99 @@
+.summary { padding-bottom: 16rpx; }
+
+.sum-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.sum-row:last-child { border-bottom: none; }
+
+.sum-label {
+  color: #6b7280;
+  font-size: 28rpx;
+}
+
+.sum-val {
+  color: #111827;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.sum-val.deposit { color: #00b8a9; }
+
+.agreement {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #4b5563;
+}
+
+.checkbox {
+  width: 32rpx;
+  height: 32rpx;
+  border: 2rpx solid #d1d5db;
+  border-radius: 50%;
+  margin-right: 12rpx;
+  position: relative;
+}
+
+.checkbox.checked {
+  background: #00b8a9;
+  border-color: #00b8a9;
+}
+
+.checkbox.checked::after {
+  content: '';
+  position: absolute;
+  left: 7rpx;
+  top: 2rpx;
+  width: 8rpx;
+  height: 16rpx;
+  border: 4rpx solid #ffffff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.link {
+  color: #00b8a9;
+  margin-left: 6rpx;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  padding: 24rpx 30rpx calc(24rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);
+}
+
+/* ============ 医院选择 & 快捷备注 ============ */
+.picker.placeholder {
+  color: #c3c9d3;
+}
+
+.note-chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.note-chip {
+  padding: 12rpx 26rpx;
+  border-radius: 999rpx;
+  background: #f0fffd;
+  color: #0f766e;
+  font-size: 26rpx;
+  margin: 0 16rpx 16rpx 0;
+  border: 2rpx solid #b2ece5;
+}
+
+.note-chip.active {
+  background: #00b8a9;
+  border-color: #00b8a9;
+  color: #ffffff;
+}

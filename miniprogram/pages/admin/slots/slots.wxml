@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="admin-nav">
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/home/home">订单</view>
+    <view class="nav-item active">时间</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/stats/stats">统计</view>
+    <view class="nav-item" bindtap="go" data-url="/pages/admin/settings/settings">设置</view>
+  </view>
+
+  <view class="card">
+    <view class="date-strip">
+      <view wx:for="{{dates}}" wx:key="date" class="date-item {{selected === item.date ? 'active' : ''}}" bindtap="selectDate" data-date="{{item.date}}">
+        <text class="dw">{{item.week}}</text>
+        <text class="dd">{{item.day}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">
+      {{selected}} 时段
+      <text class="sub">{{availableCount}} / {{daySlots.length}} 可约</text>
+    </view>
+
+    <view wx:if="{{daySlots.length}}">
+      <view wx:for="{{daySlots}}" wx:key="start" class="slot {{item.status}} {{pendingToggle === item.start ? 'pending' : ''}}" bindtap="toggleSlot" data-item="{{item}}">
+        <text class="slot-time">{{item.start}}-{{item.end}}</text>
+        <text class="slot-label">{{item.status === 'available' ? '可约' : (item.status === 'unavailable' ? '不可约' : '已约')}}</text>
+      </view>
+    </view>
+    <view class="empty" wx:else>请先在【设置】中配置工作时间段</view>
+
+    <view class="legend">
+      <view class="legend-item"><view class="dot available"></view>可约</view>
+      <view class="legend-item"><view class="dot unavailable"></view>不可约</view>
+      <view class="legend-item"><view class="dot booked"></view>已预约</view>
+    </view>
+
+    <view class="batch-row">
+      <button class="btn-ghost" bindtap="blockAll" wx:if="{{!fullyBlocked}}">整日设为不可约</button>
+      <button class="btn-ghost" bindtap="unblockAll" wx:else>整日设为可约</button>
+    </view>
+  </view>
+</view>

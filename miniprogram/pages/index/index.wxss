@@ -1,0 +1,421 @@
+.service-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  margin: 20rpx 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(31, 41, 55, 0.04);
+  border-left: 8rpx solid #00b8a9;
+}
+
+.service-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.service-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.service-person {
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-top: 6rpx;
+}
+
+.admin-link {
+  font-size: 24rpx;
+  color: #00b8a9;
+  border: 2rpx solid #00b8a9;
+  border-radius: 999rpx;
+  padding: 6rpx 18rpx;
+}
+
+.service-meta {
+  margin-top: 18rpx;
+  font-size: 28rpx;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.dot-sep {
+  margin: 0 12rpx;
+  color: #d1d5db;
+}
+
+.notice-box {
+  margin-top: 18rpx;
+  background: #f0fffd;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 24rpx;
+  color: #0f766e;
+  line-height: 1.5;
+}
+
+.date-strip {
+  white-space: nowrap;
+  padding: 6rpx 0;
+}
+
+.date-item {
+  display: inline-block;
+  width: 112rpx;
+  text-align: center;
+  margin-right: 16rpx;
+  padding: 18rpx 0;
+  border-radius: 16rpx;
+  background: #f9fafb;
+  border: 2rpx solid #f3f4f6;
+}
+
+.date-item:last-child { margin-right: 0; }
+
+.date-item.active {
+  background: #00b8a9;
+  border-color: #00b8a9;
+  color: #ffffff;
+}
+
+.date-week {
+  display: block;
+  font-size: 22rpx;
+  margin-bottom: 6rpx;
+}
+
+.date-day {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.slot-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.slot {
+  width: 31%;
+  margin: 1.16%;
+  padding: 22rpx 0;
+  border-radius: 14rpx;
+  text-align: center;
+  border: 2rpx solid #e5e7eb;
+  background: #ffffff;
+}
+
+.slot.available {
+  border-color: #00b8a9;
+  color: #00b8a9;
+  background: #f0fffd;
+}
+
+.slot.unavailable {
+  border-color: #f3f4f6;
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.slot.booked {
+  border-color: #ffc9c9;
+  background: #ffe3e3;
+  color: #fa5252;
+}
+
+.slot.selected {
+  background: #00b8a9;
+  border-color: #00b8a9;
+  color: #ffffff;
+}
+
+.slot-time {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.slot-label {
+  display: block;
+  font-size: 22rpx;
+  margin-top: 6rpx;
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #6b7280;
+  margin-left: 24rpx;
+}
+
+.dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.dot.available { background: #00b8a9; }
+.dot.unavailable { background: #d1d5db; }
+.dot.booked { background: #fa5252; }
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  padding: 24rpx 30rpx calc(24rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bottom-info {
+  flex: 1;
+}
+
+.bottom-time {
+  font-size: 26rpx;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.bottom-price {
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-top: 4rpx;
+}
+
+.bottom-btn {
+  width: 260rpx !important;
+  margin-left: 24rpx;
+  flex-shrink: 0;
+}
+
+/* ============ 月份按钮 ============ */
+.month-btn {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #00b8a9;
+  background: #f0fffd;
+  border-radius: 999rpx;
+  padding: 8rpx 20rpx;
+}
+
+.month-btn-icon {
+  font-size: 20rpx;
+  margin-left: 8rpx;
+  color: #00b8a9;
+}
+
+/* ============ 月历弹窗 ============ */
+.cal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+}
+
+.cal-panel {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 30rpx 30rpx calc(30rpx + env(safe-area-inset-bottom));
+  animation: calSlideUp 0.22s ease-out;
+}
+
+@keyframes calSlideUp {
+  from { transform: translateY(30%); opacity: 0.6; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10rpx 24rpx;
+}
+
+.cal-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.cal-arrow {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  color: #00b8a9;
+  background: #f0fffd;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.cal-week-row {
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.cal-week {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: #9ca3af;
+  padding: 10rpx 0;
+}
+
+.cal-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cal-day {
+  width: 14.2857%;
+  height: 96rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14rpx;
+  margin: 4rpx 0;
+}
+
+.cal-day.blank {
+  background: transparent;
+}
+
+.cal-day-num {
+  font-size: 30rpx;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.cal-day-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  margin-top: 8rpx;
+}
+
+.cal-day-dot.free { background: #00b8a9; }
+.cal-day-dot.full { background: #fca5a5; }
+.cal-day-dot.none { background: transparent; }
+
+.cal-day.past .cal-day-num {
+  color: #d1d5db;
+}
+
+.cal-day.today .cal-day-num {
+  color: #00b8a9;
+  font-weight: 700;
+}
+
+.cal-day.sel {
+  background: #00b8a9;
+}
+
+.cal-day.sel .cal-day-num {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.cal-day.sel .cal-day-dot {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.cal-legend {
+  display: flex;
+  align-items: center;
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 2rpx solid #f3f4f6;
+}
+
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #6b7280;
+  margin-right: 28rpx;
+}
+
+.cal-legend-item .cal-day-dot {
+  margin-top: 0;
+  margin-right: 8rpx;
+}
+
+.cal-today-btn {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: #00b8a9;
+  background: #f0fffd;
+  border-radius: 999rpx;
+  padding: 8rpx 22rpx;
+}
+
+/* ============ 联系按钮 ============ */
+.service-actions {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.wechat-btn, .phone-btn {
+  flex: 1;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wechat-btn {
+  background: #07c160;
+  color: #ffffff;
+  margin-right: 16rpx;
+}
+
+.phone-btn {
+  background: #f0fffd;
+  color: #00b8a9;
+  border: 2rpx solid #00b8a9;
+}
+
+.wechat-btn::after, .phone-btn::after { border: none; }
+
+.wechat-icon, .phone-icon {
+  font-size: 30rpx;
+  margin-right: 8rpx;
+}
+
+/* ============ 底部多段标识 ============ */
+.bottom-badge {
+  display: inline-block;
+  margin-left: 12rpx;
+  background: #fff4e6;
+  color: #f59f00;
+  font-size: 20rpx;
+  border-radius: 999rpx;
+  padding: 2rpx 14rpx;
+  vertical-align: middle;
+}

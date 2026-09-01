@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="login-card">
+    <view class="login-title">管理端登录</view>
+    <view class="login-tip">仅陪诊师本人使用</view>
+
+    <!-- 已绑定：微信一键进入 -->
+    <button wx:if="{{!checking && bound}}" class="btn-primary wechat-login-btn" bindtap="wechatLogin">
+      当前微信已授权，一键进入
+    </button>
+
+    <view class="divider" wx:if="{{!checking && bound}}">
+      <text>或使用密码</text>
+    </view>
+
+    <input class="login-input" password placeholder="请输入管理密码" value="{{password}}" bindinput="inputPwd" />
+    <button class="btn-primary" bindtap="login">密码登录（首次将绑定本微信）</button>
+
+    <view class="login-foot" wx:if="{{openid}}">
+      当前微信：{{bound ? '已绑定管理员' : '未绑定（用密码登录后将自动绑定）'}}
+    </view>
+  </view>
+</view>

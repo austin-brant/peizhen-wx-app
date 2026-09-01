@@ -1,0 +1,36 @@
+{
+  "serviceName": "专业陪诊服务",
+  "escortName": "陪诊师小护",
+  "servicePrice": 180,
+  "depositType": "fixed",
+  "depositValue": 100,
+  "phone": "",
+  "workStart": "09:00",
+  "workEnd": "18:00",
+  "slotMinutes": 60,
+  "notice": "预约成功后请按时到达医院门口，如需改期请提前联系。",
+  "wechatId": "peizhenshi2026",
+  "kfUrl": "",
+  "hospitals": [
+    "协和医院",
+    "人民医院",
+    "中心医院"
+  ],
+  "noteOptions": [
+    "老人行动不便",
+    "需轮椅",
+    "代取报告",
+    "首次就诊"
+  ],
+  "adminPassword": "123456",
+  "adminOpenids": [
+    "dev_openid",
+    "dev_e0c52cbe93df1185",
+    "dev_c5102cd050db81dd",
+    "dev_7cdad62293dd49f2"
+  ],
+  "wxaAppid": "",
+  "wxaSecret": "",
+  "createdAt": "2026-08-31T08:54:11.292Z",
+  "updatedAt": "2026-08-31T11:47:17.648Z"
+}

@@ -1,0 +1,101 @@
+@import '../home/home.wxss';
+
+.date-strip {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date-item {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 14rpx;
+  background: #f9fafb;
+  margin-right: 14rpx;
+  border: 2rpx solid #f3f4f6;
+}
+
+.date-item:last-child { margin-right: 0; }
+
+.date-item.active {
+  background: #00b8a9;
+  border-color: #00b8a9;
+  color: #ffffff;
+}
+
+.dw { display: block; font-size: 22rpx; }
+.dd { display: block; font-size: 30rpx; font-weight: 700; }
+
+.slot {
+  display: inline-block;
+  width: 22%;
+  margin: 1.5%;
+  padding: 18rpx 0;
+  border-radius: 12rpx;
+  text-align: center;
+  border: 2rpx solid #e5e7eb;
+  background: #ffffff;
+}
+
+.slot.available {
+  border-color: #00b8a9;
+  color: #00b8a9;
+  background: #f0fffd;
+}
+
+.slot.unavailable {
+  border-color: #f3f4f6;
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.slot.booked {
+  border-color: #ffc9c9;
+  background: #ffe3e3;
+  color: #fa5252;
+}
+
+.slot.pending {
+  opacity: 0.6;
+}
+
+.slot-time {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.slot-label {
+  display: block;
+  font-size: 20rpx;
+  margin-top: 4rpx;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  margin: 24rpx 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #6b7280;
+  margin: 0 16rpx;
+}
+
+.dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.dot.available { background: #00b8a9; }
+.dot.unavailable { background: #d1d5db; }
+.dot.booked { background: #fa5252; }
+
+.batch-row {
+  margin-top: 10rpx;
+}

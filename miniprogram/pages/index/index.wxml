@@ -1,0 +1,119 @@
+<view class="page">
+  <!-- 服务信息 -->
+  <view class="service-card">
+    <view class="service-header">
+      <view>
+        <view class="service-name" bindtap="tapTitle">{{config.serviceName || '专业陪诊服务'}}</view>
+        <view class="service-person">陪诊师：{{config.escortName || '陪诊师'}}</view>
+      </view>
+      <view class="admin-link" wx:if="{{isAdmin}}" bindtap="goAdmin">管理入口</view>
+    </view>
+    <view class="service-meta">
+      <text>服务费 ¥{{config.servicePrice || '--'}}/次</text>
+      <text class="dot-sep">·</text>
+      <text>定金 ¥{{config.deposit || '--'}}</text>
+    </view>
+    <view class="notice-box" wx:if="{{config.notice}}">
+      <text>公告：{{config.notice}}</text>
+    </view>
+    <view class="service-actions" wx:if="{{config.wechatId || config.kfUrl || config.phone}}">
+      <button class="wechat-btn" wx:if="{{config.wechatId || config.kfUrl}}" bindtap="contactWechat">
+        <text class="wechat-icon">💬</text>
+        <text>微信联系</text>
+      </button>
+      <button class="phone-btn" wx:if="{{config.phone}}" bindtap="callPhone">
+        <text class="phone-icon">📞</text>
+        <text>电话咨询</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="card">
+    <view class="card-title">
+      选择日期
+      <view class="month-btn" bindtap="openCalendar">
+        <text>{{currentMonth}}</text>
+        <text class="month-btn-icon">▾</text>
+      </view>
+    </view>
+    <scroll-view scroll-x class="date-strip" scroll-with-animation enhanced show-scrollbar="{{false}}">
+      <view wx:for="{{dates}}" wx:key="date" class="date-item {{selected.date === item.date ? 'active' : ''}}" bindtap="selectDate" data-date="{{item.date}}">
+        <text class="date-week">{{item.week}}</text>
+        <text class="date-day">{{item.day}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 时段选择 -->
+  <view class="card">
+    <view class="card-title">
+      选择时段
+      <view class="sub">{{availableCount}} 个可约 · 可连选多段</view>
+    </view>
+    <view class="slot-grid" wx:if="{{slots.length}}">
+      <view wx:for="{{slots}}" wx:key="start" class="slot {{item.status}} {{selected.start && selected.end && item.start >= selected.start && item.end <= selected.end && item.status === 'available' ? 'selected' : ''}}" bindtap="selectSlot" data-item="{{item}}">
+        <text class="slot-time">{{item.start}}</text>
+        <text class="slot-label">{{item.status === 'available' ? '可选' : (item.status === 'unavailable' ? '不可约' : '已约')}}</text>
+      </view>
+    </view>
+    <view class="empty" wx:else>该日暂无可约时段</view>
+
+    <view class="legend">
+      <view class="legend-item"><view class="dot available"></view>可选</view>
+      <view class="legend-item"><view class="dot unavailable"></view>不可约</view>
+      <view class="legend-item"><view class="dot booked"></view>已约</view>
+    </view>
+  </view>
+
+  <view style="height: 200rpx;"></view>
+
+  <!-- 底部预约栏 -->
+  <view class="bottom-bar" wx:if="{{selected.start && selected.end}}">
+    <view class="bottom-info">
+      <view class="bottom-time">
+        {{selected.date}} {{selected.start}} - {{selected.end}}
+        <text class="bottom-badge" wx:if="{{slotCount > 1}}">共 {{slotCount}} 段</text>
+      </view>
+      <view class="bottom-price">定金 ¥{{config.deposit}} · 尾款 ¥{{tail}}</view>
+    </view>
+    <button class="btn-primary bottom-btn" bindtap="goBook">立即预约</button>
+  </view>
+
+  <!-- 月历弹窗 -->
+  <view class="cal-mask" wx:if="{{showCalendar}}" bindtap="closeCalendar">
+    <view class="cal-panel" catchtap="stopPropagation">
+      <view class="cal-header">
+        <view class="cal-arrow" bindtap="prevMonth">‹</view>
+        <view class="cal-title">{{calTitle}}</view>
+        <view class="cal-arrow" bindtap="nextMonth">›</view>
+      </view>
+
+      <view class="cal-week-row">
+        <view class="cal-week">一</view>
+        <view class="cal-week">二</view>
+        <view class="cal-week">三</view>
+        <view class="cal-week">四</view>
+        <view class="cal-week">五</view>
+        <view class="cal-week">六</view>
+        <view class="cal-week">日</view>
+      </view>
+
+      <view class="cal-grid">
+        <view wx:for="{{calGrid}}" wx:key="key" class="cal-day {{item.blank ? 'blank' : item.cls}} {{!item.blank && selected.date === item.date ? 'sel' : ''}} {{!item.blank && item.isToday ? 'today' : ''}}" bindtap="pickCalendarDay" data-item="{{item}}">
+          <block wx:if="{{!item.blank}}">
+            <text class="cal-day-num">{{item.day}}</text>
+            <view wx:if="{{!item.past}}" class="cal-day-dot {{item.availableCount > 0 ? 'free' : 'full'}}"></view>
+            <view wx:else class="cal-day-dot none"></view>
+          </block>
+        </view>
+      </view>
+
+      <view class="cal-legend">
+        <view class="cal-legend-item"><view class="cal-day-dot free"></view>有可约时段</view>
+        <view class="cal-legend-item"><view class="cal-day-dot full"></view>约满 / 不可约</view>
+        <view class="cal-today-btn" bindtap="goToday">回到今天</view>
+      </view>
+    </view>
+  </view>
+</view>

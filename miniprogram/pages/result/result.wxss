@@ -1,0 +1,67 @@
+.result-box {
+  text-align: center;
+  padding: 100rpx 0 60rpx;
+}
+
+.icon-circle {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #e6fcf5;
+  margin: 0 auto;
+  position: relative;
+}
+
+.icon-circle.tail { background: #e6fcf5; }
+
+.icon-check {
+  position: absolute;
+  left: 36rpx;
+  top: 50rpx;
+  width: 30rpx;
+  height: 60rpx;
+  border: 8rpx solid #00b8a9;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 40rpx;
+}
+
+.result-amount {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #00b8a9;
+  margin-top: 16rpx;
+}
+
+.result-tip {
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-top: 16rpx;
+  padding: 0 60rpx;
+  line-height: 1.6;
+}
+
+.info {
+  margin-top: 40rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 14rpx 0;
+  font-size: 26rpx;
+}
+
+.info-row text:first-child { color: #6b7280; }
+.info-row text:last-child { color: #111827; }
+
+.btn-wrap {
+  padding: 40rpx 48rpx;
+}

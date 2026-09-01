@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/orders/orders",
+    "pages/book/book",
+    "pages/order-detail/order-detail",
+    "pages/result/result",
+    "pages/admin/login/login",
+    "pages/admin/home/home",
+    "pages/admin/slots/slots",
+    "pages/admin/stats/stats",
+    "pages/admin/settings/settings"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "陪诊预约",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f7fa",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#8a94a6",
+    "selectedColor": "#00b8a9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "预约",
+        "iconPath": "images/tab-book.png",
+        "selectedIconPath": "images/tab-book-on.png"
+      },
+      {
+        "pagePath": "pages/orders/orders",
+        "text": "我的",
+        "iconPath": "images/tab-me.png",
+        "selectedIconPath": "images/tab-me-on.png"
+      }
+    ]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

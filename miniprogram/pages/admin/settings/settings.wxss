@@ -1,0 +1,98 @@
+@import '../home/home.wxss';
+
+.picker {
+  display: flex;
+  align-items: center;
+  height: 44rpx;
+}
+
+.picker::after {
+  content: '';
+  margin-left: 12rpx;
+  width: 0;
+  height: 0;
+  border-left: 10rpx solid transparent;
+  border-right: 10rpx solid transparent;
+  border-top: 12rpx solid #d1d5db;
+}
+
+.save-row, .logout-row {
+  margin: 30rpx 24rpx;
+}
+
+.slot-preview {
+  margin-top: 16rpx;
+  background: #f0fffd;
+  border-radius: 12rpx;
+  padding: 14rpx 20rpx;
+  font-size: 24rpx;
+  color: #0f766e;
+  line-height: 1.5;
+}
+
+/* ============ 列表编辑（医院/备注选项） ============ */
+.list-edit {
+  border-top: 1rpx solid #f3f4f6;
+}
+
+.list-edit-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.list-edit-name {
+  font-size: 28rpx;
+  color: #1f2937;
+}
+
+.list-edit-del {
+  font-size: 24rpx;
+  color: #fa5252;
+  padding: 8rpx 16rpx;
+  background: #fff0f0;
+  border-radius: 999rpx;
+}
+
+.list-add {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.list-add-input {
+  flex: 1;
+  height: 76rpx;
+  background: #f9fafb;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+}
+
+.list-add-btn {
+  width: 140rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-left: 16rpx;
+  background: #00b8a9;
+  color: #ffffff;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  padding: 0;
+  text-align: center;
+}
+
+.list-add-btn::after { border: none; }
+
+/* ============ 管理员绑定提示 ============ */
+.bind-tip {
+  margin-top: 16rpx;
+  background: #f0fffd;
+  border-radius: 12rpx;
+  padding: 14rpx 20rpx;
+  font-size: 24rpx;
+  color: #0f766e;
+  line-height: 1.5;
+}

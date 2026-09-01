@@ -1,0 +1,114 @@
+.search-card { padding-bottom: 24rpx; }
+
+.search-label {
+  font-size: 26rpx;
+  color: #4b5563;
+  margin-bottom: 16rpx;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  background: #f9fafb;
+  border-radius: 44rpx;
+  padding: 0 28rpx;
+  font-size: 28rpx;
+  color: #111827;
+}
+
+.search-btn {
+  width: 140rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-left: 20rpx;
+  background: #00b8a9;
+  color: #ffffff;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  padding: 0;
+  text-align: center;
+}
+
+.search-btn::after { border: none; }
+
+.order-item {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.order-item:last-child { border-bottom: none; }
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.order-time {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.order-body {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-bottom: 12rpx;
+}
+
+.order-name { color: #1f2937; }
+
+.order-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+.order-paid { color: #00b8a9; font-weight: 600; }
+
+/* ============ 微信登录卡片 ============ */
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx;
+}
+
+.login-icon {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #f0fffd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72rpx;
+  margin-bottom: 28rpx;
+}
+
+.login-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.login-tip {
+  font-size: 24rpx;
+  color: #9ca3af;
+  text-align: center;
+  margin: 16rpx 0 40rpx;
+  line-height: 1.6;
+}
+
+.login-btn {
+  width: 80%;
+}

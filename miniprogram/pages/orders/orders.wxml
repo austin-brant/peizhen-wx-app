@@ -1,0 +1,40 @@
+<view class="page">
+  <!-- 未登录：微信授权卡片 -->
+  <view class="card login-card" wx:if="{{!loggedIn}}">
+    <view class="login-icon">👤</view>
+    <view class="login-title">微信登录后查看我的预约</view>
+    <view class="login-tip">授权微信账号，即可随时查看自己的预约订单、支付定金和尾款</view>
+    <button class="btn-primary login-btn" bindtap="doLogin">微信一键登录</button>
+  </view>
+
+  <!-- 已登录：预约列表 -->
+  <block wx:else>
+    <view class="card">
+      <view class="card-title">
+        我的预约
+        <view class="sub">{{loaded ? '共 ' + orders.length + ' 单' : ''}}</view>
+      </view>
+
+      <view wx:if="{{loading}}" class="empty">加载中...</view>
+      <view wx:elif="{{orders.length}}">
+        <view wx:for="{{orders}}" wx:key="id" class="order-item" bindtap="goDetail" data-id="{{item.id}}">
+          <view class="order-top">
+            <text class="order-time">{{item.date}} {{item.start}}-{{item.end}}</text>
+            <view class="tag {{item.statusText.cls}}">{{item.statusText.text}}</view>
+          </view>
+          <view class="order-body">
+            <text>{{item.hospital}}</text>
+            <text class="order-name">{{item.clientName}}</text>
+          </view>
+          <view class="order-bottom">
+            <text>服务费 ¥{{item.price}}</text>
+            <text class="order-paid" wx:if="{{item.depositPaid}}">已付定金 ¥{{item.deposit}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="empty" wx:else>
+        暂无预约记录，去首页选个时段吧
+      </view>
+    </view>
+  </block>
+</view>
