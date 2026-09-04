@@ -1,3 +1,22 @@
+/* 页面骨架：内容区自适应，底栏吸附底部（占位不遮挡内容，页面可正常滚动） */
+page {
+  padding-bottom: 0;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+.safe-gap {
+  height: 24rpx;
+}
+
 .status-card {
   background: linear-gradient(135deg, #00b8a9 0%, #00a3b8 100%);
   color: #ffffff;
@@ -84,11 +103,23 @@
 .money-row .amount { color: #fa5252; }
 .money-row .done { color: #00b8a9; }
 
+.fee-tip {
+  margin-top: 10rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx solid #f3f4f6;
+  font-size: 24rpx;
+  color: #9aa3b2;
+  line-height: 1.6;
+}
+
+/* 底栏：sticky 吸附底部，同时占据文档流高度，不再遮挡底部内容 */
 .bottom-bar {
-  position: fixed;
+  position: sticky;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  z-index: 20;
+  flex: none;
   background: #ffffff;
   padding: 24rpx 30rpx calc(24rpx + env(safe-area-inset-bottom));
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);

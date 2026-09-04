@@ -1,0 +1,59 @@
+{
+  "serviceName": "安馨陪诊服务",
+  "escortName": "陪诊师小护",
+  "servicePrice": 75,
+  "phone": "",
+  "workStart": "09:00",
+  "workEnd": "17:00",
+  "slotMinutes": 60,
+  "notice": "预约成功后请按时到达医院门口，如需改期请提前联系。",
+  "wechatId": "peizhenshi2026_new",
+  "kfUrl": "",
+  "wxCorpId": "",
+  "about": "\n![图片](/api/uploads/IMGmtk1752vqtobu.png)\n",
+  "hospitals": [
+    "协和医院",
+    "人民医院",
+    "中心医院"
+  ],
+  "departments": [
+    "心内科",
+    "呼吸内科",
+    "骨科",
+    "儿科"
+  ],
+  "discounts": [
+    {
+      "hours": 4,
+      "rate": 0.9
+    },
+    {
+      "hours": 8,
+      "rate": 0.8
+    }
+  ],
+  "noteOptions": [
+    "老人行动不便",
+    "需轮椅",
+    "代取报告",
+    "首次就诊"
+  ],
+  "adminPassword": "123456",
+  "adminPhones": [
+    "13800138000",
+    "13900139000"
+  ],
+  "adminOpenids": [
+    "dev_openid",
+    "dev_e0c52cbe93df1185",
+    "dev_c5102cd050db81dd",
+    "dev_admin_test",
+    "dev_f1d5cd65fe8c6fed"
+  ],
+  "wxaAppid": "",
+  "wxaSecret": "",
+  "createdAt": "2026-08-31T08:54:11.292Z",
+  "updatedAt": "2026-09-02T11:47:21.177Z",
+  "depositType": "fixed",
+  "depositValue": 100
+}

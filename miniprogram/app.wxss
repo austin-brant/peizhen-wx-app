@@ -12,6 +12,12 @@ view, text, input, textarea, button {
   box-sizing: border-box;
 }
 
+/* tab 页专用：自定义 tabBar 悬浮在页面底部（fixed 覆盖层），
+   页面内容需预留 tabBar 高度，否则底部内容被盖住 */
+.tab-page {
+  padding-bottom: calc(110rpx + env(safe-area-inset-bottom));
+}
+
 /* 卡片 */
 .card {
   background: #ffffff;
@@ -99,7 +105,8 @@ view, text, input, textarea, button {
 .tag-tail { background: #fff0f0; color: #fa5252; }      /* 待付尾款 */
 .tag-done { background: #e6fcf5; color: #00b8a9; }      /* 已结清 */
 .tag-cancel { background: #f1f3f5; color: #9ca3af; }    /* 已取消 */
-.tag-pending { background: #e7f0ff; color: #3b82f6; }   /* 待支付 */
+.tag-pending { background: #e7f0ff; color: #3b82f6; }   /* 待确认 */
+.tag-confirmed { background: #fff4e6; color: #f59f00; } /* 已确认 */
 
 /* 表单 */
 .form-item {

@@ -84,6 +84,21 @@
 
 .filter-item:last-child { margin-right: 0; }
 
+/* 日历选日期（picker 作为 flex 子项） */
+.filter-bar picker {
+  flex: 1;
+  display: block;
+  margin-left: 16rpx;
+}
+
+.filter-bar picker .filter-item {
+  width: 100%;
+  box-sizing: border-box;
+  margin-right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .filter-item.active {
   background: #e6fcf5;
   color: #00b8a9;
@@ -105,6 +120,11 @@
   color: #111827;
 }
 
+.row-arrow {
+  color: #c3c9d3;
+  font-weight: 400;
+}
+
 .order-info {
   font-size: 24rpx;
   color: #6b7280;
@@ -116,6 +136,8 @@
   color: #00b8a9;
   margin-top: 8rpx;
 }
+
+.order-dur { color: #9aa3b2; }
 
 .order-side {
   display: flex;
@@ -140,7 +162,22 @@
   color: #ffffff;
 }
 
+.action-btn.confirm {
+  background: #e7f0ff;
+  color: #3b82f6;
+}
+
 .action-btn.danger {
   background: #fff0f0;
   color: #fa5252;
+}
+
+.action-btn.delete {
+  background: #f1f3f5;
+  color: #9ca3af;
+}
+
+/* 状态过滤条（第二行） */
+.status-bar {
+  margin-top: -8rpx;
 }

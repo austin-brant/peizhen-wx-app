@@ -1,0 +1,21 @@
+<view class="page">
+  <!-- 陪诊师头部 -->
+  <view class="about-header">
+    <image class="about-avatar" wx:if="{{escortAvatarUrl}}" src="{{escortAvatarUrl}}" mode="aspectFill" />
+    <view class="about-avatar" wx:else>{{avatarText}}</view>
+    <view class="about-name">{{escortName}}</view>
+    <view class="about-sub">专业陪诊 · 贴心陪伴每一次就医</view>
+  </view>
+
+  <!-- 介绍内容（Markdown 渲染） -->
+  <view class="card md-body" wx:if="{{hasContent}}">
+    <rich-text nodes="{{nodes}}"></rich-text>
+  </view>
+  <view class="card empty-card" wx:else>
+    <view class="empty-icon">📝</view>
+    <view class="empty-text">陪诊师暂未填写介绍</view>
+    <view class="empty-sub">管理员可在「设置 → 陪诊师介绍」中编辑</view>
+  </view>
+
+  <view style="height: 40rpx;"></view>
+</view>

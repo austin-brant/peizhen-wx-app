@@ -1,14 +1,40 @@
-<view class="page">
+<view class="page tab-page">
   <!-- 未登录：微信授权卡片 -->
   <view class="card login-card" wx:if="{{!loggedIn}}">
     <view class="login-icon">👤</view>
     <view class="login-title">微信登录后查看我的预约</view>
-    <view class="login-tip">授权微信账号，即可随时查看自己的预约订单、支付定金和尾款</view>
+    <view class="login-tip">授权微信账号，即可随时查看自己的预约订单</view>
     <button class="btn-primary login-btn" bindtap="doLogin">微信一键登录</button>
   </view>
 
-  <!-- 已登录：预约列表 -->
+  <!-- 已登录：个人信息卡 + 预约列表 -->
   <block wx:else>
+    <!-- 个人信息卡：头像（chooseAvatar）+ 昵称（type=nickname），存用户表 -->
+    <view class="card profile-card">
+      <view class="profile-head">
+        <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image class="profile-avatar" wx:if="{{profile.avatar}}" src="{{profile.avatar}}" mode="aspectFill" />
+          <view class="profile-avatar placeholder" wx:else>👤</view>
+          <view class="avatar-badge">改</view>
+        </button>
+        <view class="profile-main">
+          <input
+            class="profile-nickname"
+            type="nickname"
+            placeholder="点击填写昵称"
+            value="{{profile.nickname}}"
+            bindinput="onNicknameInput"
+            bindblur="onNicknameBlur"
+          />
+          <view class="profile-sub">
+            <text wx:if="{{profile.phone}}">{{profile.phone}}</text>
+            <text wx:else>下单后自动记录联系信息</text>
+          </view>
+        </view>
+      </view>
+      <view class="profile-hint">头像与昵称仅用于展示，管理员可据此识别你的预约身份</view>
+    </view>
+
     <view class="card">
       <view class="card-title">
         我的预约
@@ -28,7 +54,7 @@
           </view>
           <view class="order-bottom">
             <text>服务费 ¥{{item.price}}</text>
-            <text class="order-paid" wx:if="{{item.depositPaid}}">已付定金 ¥{{item.deposit}}</text>
+            <text class="order-time-dur" wx:if="{{item.durationHours}}">{{item.durationHours}} 小时</text>
           </view>
         </view>
       </view>

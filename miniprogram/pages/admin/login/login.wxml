@@ -1,22 +1,35 @@
 <view class="page">
   <view class="login-card">
     <view class="login-title">管理端登录</view>
-    <view class="login-tip">仅陪诊师本人使用</view>
+    <view class="login-tip">白名单微信 + 密码可登录</view>
 
-    <!-- 已绑定：微信一键进入 -->
+    <!-- 已授权：微信一键进入 -->
     <button wx:if="{{!checking && bound}}" class="btn-primary wechat-login-btn" bindtap="wechatLogin">
       当前微信已授权，一键进入
     </button>
 
     <view class="divider" wx:if="{{!checking && bound}}">
-      <text>或使用密码</text>
+      <text>或使用密码登录</text>
     </view>
 
-    <input class="login-input" password placeholder="请输入管理密码" value="{{password}}" bindinput="inputPwd" />
-    <button class="btn-primary" bindtap="login">密码登录（首次将绑定本微信）</button>
+    <!-- 当前微信卡片 -->
+    <view class="wx-card">
+      <view class="wx-card-row">
+        <view class="wx-card-label">当前微信</view>
+        <view class="wx-card-status {{bound ? 'ok' : 'no'}}">{{bound ? '已授权' : '未授权'}}</view>
+      </view>
+      <view class="wx-card-id">
+        <text class="openid-text">{{shortOpenid || '获取中…'}}</text>
+        <button class="copy-btn" size="mini" bindtap="copyOpenid" disabled="{{!openid}}">复制 openid</button>
+      </view>
+      <view class="wx-card-tip" wx:if="{{!checking && !bound}}">当前微信不在管理白名单内，复制 openid 联系管理员添加后才能登录</view>
+    </view>
+
+    <input class="login-input" password placeholder="管理密码" value="{{password}}" bindinput="inputPwd" />
+    <button class="btn-primary" bindtap="login" disabled="{{checking}}">微信 + 密码登录</button>
 
     <view class="login-foot" wx:if="{{openid}}">
-      当前微信：{{bound ? '已绑定管理员' : '未绑定（用密码登录后将自动绑定）'}}
+      登录成功后此微信将可一键进入
     </view>
   </view>
 </view>

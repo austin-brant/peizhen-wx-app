@@ -9,7 +9,6 @@ Page({
     slots: [],
     config: {},
     availableCount: 0,
-    tail: 0,
     slotCount: 0,
     currentMonth: '',
     loading: false,
@@ -36,6 +35,10 @@ Page({
   },
 
   async onShow() {
+    // 同步自定义 tabBar 选中态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 });
+    }
     // 管理员身份：本地 token 或微信已绑定管理员
     let isAdmin = !!wx.getStorageSync('admin_token');
     if (!isAdmin && login.isLoggedIn()) {
@@ -64,6 +67,8 @@ Page({
     try {
       const res = await api.get('/api/slots?date=' + date + '&days=1');
       const cfg = res.config || {};
+      // 陪诊师头像（相对地址转绝对，供 <image> 显示）
+      if (cfg.escortAvatar) cfg.escortAvatarUrl = this.absUrl(cfg.escortAvatar);
       const slots = (res.days && res.days[0] && res.days[0].slots) || [];
 
       // 如果当前选中的时段状态不再是可选，则清除选中
@@ -79,8 +84,7 @@ Page({
         config: cfg,
         slots,
         availableCount: res.availableCount || 0,
-        selected,
-        tail: cfg.servicePrice - cfg.deposit
+        selected
       });
       this.refreshSlotCount(selected);
     } catch (e) {
@@ -118,7 +122,6 @@ Page({
       'selected.date': date,
       'selected.start': '',
       'selected.end': '',
-      tail: 0,
       slotCount: 0
     });
     this.loadConfigAndSlots();
@@ -129,10 +132,20 @@ Page({
     this.applyDate(date);
   },
 
-  /** 时段选择：支持连续多选，合并为一个区间 [start, end] */
+  /** 时段选择：支持连续多选，合并为一个区间 [start, end]；管理员点已约时段可跳详情 */
   selectSlot(e) {
     const item = e.currentTarget.dataset.item;
-    if (item.status !== 'available') return;
+    if (item.status !== 'available') {
+      if (item.status === 'booked') {
+        if (this.data.isAdmin && item.orderId) {
+          // 管理员快捷入口：已约时段 → 该订单详情
+          wx.navigateTo({ url: '/pages/admin/order-detail/order-detail?id=' + item.orderId });
+        } else {
+          util.toast('该时段已被预约');
+        }
+      }
+      return;
+    }
 
     const slots = this.data.slots;
     const idx = slots.findIndex(s => s.start === item.start);
@@ -161,7 +174,7 @@ Page({
     }
 
     if (ns < 0 || ne < 0) {
-      this.setData({ 'selected.start': '', 'selected.end': '', tail: 0, slotCount: 0 });
+      this.setData({ 'selected.start': '', 'selected.end': '', slotCount: 0 });
       return;
     }
     if (ns > ne) { ns = ne; }
@@ -170,8 +183,7 @@ Page({
     const end = slots[ne].end;
     this.setData({
       'selected.start': start,
-      'selected.end': end,
-      tail: (this.data.config.servicePrice || 0) - (this.data.config.deposit || 0)
+      'selected.end': end
     });
     this.refreshSlotCount({ start, end });
   },
@@ -189,10 +201,23 @@ Page({
     this.setData({ slotCount: count });
   },
 
+  /** 相对头像地址转绝对地址（/api/uploads/xx → baseUrl + 路径） */
+  absUrl(u) {
+    if (!u) return '';
+    return /^https?:/.test(u) ? u : getApp().globalData.baseUrl + u;
+  },
+
   goBook() {
     const s = this.data.selected;
     if (!s.start) {
       util.toast('请先选择可预约时段');
+      return;
+    }
+    // 预约至少选择两个小时（连续两个及以上时段）
+    const toMin = (t) => { const p = t.split(':').map(Number); return p[0] * 60 + p[1]; };
+    const minutes = toMin(s.end) - toMin(s.start);
+    if (minutes < 120) {
+      util.toast('预约时长至少为 2 小时，请连选两个及以上时段');
       return;
     }
     wx.navigateTo({
@@ -202,37 +227,45 @@ Page({
 
   /* ===================== 微信联系 ===================== */
 
+  /**
+   * 微信联系：配置了企业微信客服（wxCorpId + kfUrl）→ 直接跳转客服聊天窗口；
+   * 否则弹「加微信」提示，一键复制陪诊师微信号。
+   */
   contactWechat() {
     const cfg = this.data.config || {};
-    if (cfg.kfUrl) {
-      // 已配置企业微信客服 → 直接打开客服会话
+    const corpId = (cfg.wxCorpId || '').trim();
+    const kfUrl = (cfg.kfUrl || '').trim();
+    if (corpId && kfUrl && wx.openCustomerServiceChat) {
       wx.openCustomerServiceChat({
-        extInfo: { url: cfg.kfUrl },
-        success() {},
-        fail() {
-          util.toast('暂无法打开客服，请复制微信号添加');
-          this.copyWechatId(cfg);
-        }
+        corpId,
+        extInfo: { url: kfUrl },
+        fail: () => this.promptAddWechat(cfg)
       });
       return;
     }
-    this.copyWechatId(cfg);
+    this.promptAddWechat(cfg);
   },
 
-  copyWechatId(cfg) {
+  /** 未配置/打不开客服：提示加微信，确认后一键复制微信号 */
+  promptAddWechat(cfg) {
     const wid = (cfg.wechatId || '').trim();
     if (!wid) {
       util.toast('暂未配置微信号，可电话联系');
       return;
     }
-    wx.setClipboardData({
-      data: wid,
-      success() {
-        wx.showModal({
-          title: '微信号已复制',
-          content: '微信：' + wid + '\n请打开微信搜索添加好友，备注"预约陪诊"更快通过',
-          showCancel: false,
-          confirmColor: '#00b8a9'
+    wx.showModal({
+      title: '微信联系',
+      content: '微信号：' + wid + '\n\n· 已添加微信：打开微信直接发消息\n· 未添加：点「复制微信号」，去微信搜索添加',
+      confirmText: '复制微信号',
+      cancelText: '暂不',
+      confirmColor: '#00b8a9',
+      success: (r) => {
+        if (!r.confirm) return;
+        wx.setClipboardData({
+          data: wid,
+          success() {
+            util.toast('已复制，去微信添加好友');
+          }
         });
       }
     });
@@ -320,7 +353,7 @@ Page({
     if (t.data.titleTapCount >= 5) {
       t.data.titleTapCount = 0;
       if (t.data.isAdmin) {
-        wx.navigateTo({ url: '/pages/admin/home/home' });
+        wx.switchTab({ url: '/pages/admin/home/home' });
       } else {
         wx.navigateTo({ url: '/pages/admin/login/login' });
       }
@@ -329,6 +362,11 @@ Page({
 
   goAdmin() {
     if (!this.data.isAdmin) return;
-    wx.navigateTo({ url: '/pages/admin/home/home' });
+    wx.switchTab({ url: '/pages/admin/home/home' });
+  },
+
+  /** 陪诊师介绍页 */
+  goAbout() {
+    wx.navigateTo({ url: '/pages/about/about' });
   }
 });

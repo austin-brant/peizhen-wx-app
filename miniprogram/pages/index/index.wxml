@@ -1,17 +1,21 @@
-<view class="page">
+<view class="page tab-page">
+  <view class="content">
   <!-- 服务信息 -->
   <view class="service-card">
     <view class="service-header">
-      <view>
+      <view class="service-head-main">
         <view class="service-name" bindtap="tapTitle">{{config.serviceName || '专业陪诊服务'}}</view>
-        <view class="service-person">陪诊师：{{config.escortName || '陪诊师'}}</view>
+        <view class="service-person">
+          <image class="escort-avatar" wx:if="{{config.escortAvatarUrl}}" src="{{config.escortAvatarUrl}}" mode="aspectFill" />
+          <text class="person-name">陪诊师：{{config.escortName || '陪诊师'}}</text>
+          <text class="about-link" bindtap="goAbout">查看介绍 ›</text>
+        </view>
       </view>
       <view class="admin-link" wx:if="{{isAdmin}}" bindtap="goAdmin">管理入口</view>
     </view>
     <view class="service-meta">
-      <text>服务费 ¥{{config.servicePrice || '--'}}/次</text>
-      <text class="dot-sep">·</text>
-      <text>定金 ¥{{config.deposit || '--'}}</text>
+      <text>服务费 ¥{{config.servicePrice || '--'}}/小时</text>
+      <text wx:if="{{config.discounts && config.discounts.length}}" class="service-discount"> · 满时长有折扣</text>
     </view>
     <view class="notice-box" wx:if="{{config.notice}}">
       <text>公告：{{config.notice}}</text>
@@ -49,12 +53,12 @@
   <view class="card">
     <view class="card-title">
       选择时段
-      <view class="sub">{{availableCount}} 个可约 · 可连选多段</view>
+      <view class="sub">{{availableCount}} 个可约 · 至少连选 2 小时</view>
     </view>
     <view class="slot-grid" wx:if="{{slots.length}}">
       <view wx:for="{{slots}}" wx:key="start" class="slot {{item.status}} {{selected.start && selected.end && item.start >= selected.start && item.end <= selected.end && item.status === 'available' ? 'selected' : ''}}" bindtap="selectSlot" data-item="{{item}}">
         <text class="slot-time">{{item.start}}</text>
-        <text class="slot-label">{{item.status === 'available' ? '可选' : (item.status === 'unavailable' ? '不可约' : '已约')}}</text>
+        <text class="slot-label">{{item.status === 'available' ? '可选' : (item.status === 'unavailable' ? '不可约' : (isAdmin ? '查详情' : '已约'))}}</text>
       </view>
     </view>
     <view class="empty" wx:else>该日暂无可约时段</view>
@@ -66,16 +70,17 @@
     </view>
   </view>
 
-  <view style="height: 200rpx;"></view>
+  <view class="safe-gap"></view>
+  </view>
 
-  <!-- 底部预约栏 -->
+  <!-- 底部预约栏（sticky 吸附在自定义 tabBar 之上，不遮挡内容） -->
   <view class="bottom-bar" wx:if="{{selected.start && selected.end}}">
     <view class="bottom-info">
       <view class="bottom-time">
         {{selected.date}} {{selected.start}} - {{selected.end}}
         <text class="bottom-badge" wx:if="{{slotCount > 1}}">共 {{slotCount}} 段</text>
       </view>
-      <view class="bottom-price">定金 ¥{{config.deposit}} · 尾款 ¥{{tail}}</view>
+      <view class="bottom-price">¥{{config.servicePrice || '--'}}/小时 · 多段连选合并</view>
     </view>
     <button class="btn-primary bottom-btn" bindtap="goBook">立即预约</button>
   </view>

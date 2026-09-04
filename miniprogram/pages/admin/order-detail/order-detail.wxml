@@ -1,0 +1,63 @@
+<view class="page" wx:if="{{order}}">
+  <view class="content">
+  <view class="status-card">
+    <view class="status-title">{{statusText.text}}</view>
+    <view class="status-desc">{{statusDesc}}</view>
+  </view>
+
+  <!-- 下单用户（基于 openid 关联的用户资料：头像/昵称由用户在小程序「我的」页主动填写） -->
+  <view class="card user-card" wx:if="{{order.user && (order.user.nickname || order.user.avatarUrl || order.user.name)}}">
+    <view class="user-head">
+      <image class="user-avatar" src="{{userAvatar}}" mode="aspectFill" wx:if="{{userAvatar}}" />
+      <view class="user-avatar placeholder" wx:else>👤</view>
+      <view class="user-meta">
+        <view class="user-name">{{order.user.nickname || '微信用户'}}</view>
+        <view class="user-sub" wx:if="{{order.user.name}}">最近预约人：{{order.user.name}}{{order.user.phone ? ' · ' + order.user.phone : ''}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预约信息 -->
+  <view class="card">
+    <view class="card-title">预约信息</view>
+    <view class="info-row"><text>服务时间</text><text class="strong">{{order.date}} {{order.start}}-{{order.end}}</text></view>
+    <view class="info-row"><text>服务时长</text><text>{{order.durationHours}} 小时{{order.slotCount > 1 ? '（' + order.slotCount + '个时段）' : ''}}</text></view>
+    <view class="info-row"><text>就诊医院</text><text>{{order.hospital}}</text></view>
+    <view class="info-row" wx:if="{{order.department}}"><text>科室</text><text>{{order.department}}</text></view>
+    <view class="info-row"><text>预约人</text><text>{{order.bookerName || order.clientName}}</text></view>
+    <view class="info-row"><text>预约人手机号</text><text>{{order.bookerPhone || order.clientPhone}}</text></view>
+    <view class="info-row" wx:if="{{order.forOthers}}"><text>就诊人</text><text>{{order.clientName}}</text></view>
+    <view class="info-row" wx:if="{{order.forOthers}}"><text>就诊人手机号</text><text>{{order.clientPhone}}</text></view>
+    <view class="info-row" wx:if="{{order.notes}}"><text>备注</text><text>{{order.notes}}</text></view>
+    <view class="info-row"><text>下单时间</text><text class="sub-text">{{createdText}}</text></view>
+  </view>
+
+  <!-- 费用 -->
+  <view class="card" wx:if="{{order.price}}">
+    <view class="card-title">费用</view>
+    <view class="money-row"><text>总价</text><text class="money">¥{{order.price}}</text></view>
+    <view class="fee-line" wx:if="{{order.unitPrice}}">{{order.unitPrice}} 元/小时 × {{order.durationHours}} 小时</view>
+    <view class="fee-line" wx:if="{{discountText}}">折扣：{{discountText}}</view>
+  </view>
+
+  <!-- 联系用户 -->
+  <view class="card" wx:if="{{order.bookerPhone || order.clientPhone}}">
+    <view class="card-title">联系用户</view>
+    <view class="contact-row">
+      <button class="contact-btn phone" bindtap="callClient">拨打电话</button>
+    </view>
+    <view class="fee-tip">小程序无法直接跳转微信聊天窗口，请通过电话联系用户；如需添加微信，可根据用户姓名/手机号在微信中搜索。</view>
+  </view>
+
+  <view class="safe-gap"></view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="bottom-bar">
+    <button class="btn-primary" wx:if="{{order.status === 'pending'}}" bindtap="confirmOrder">确认预约</button>
+    <button class="btn-primary" wx:if="{{order.status === 'confirmed'}}" bindtap="completeOrder">标记完成</button>
+    <button class="btn-danger" wx:if="{{order.status === 'pending' || order.status === 'confirmed'}}" bindtap="cancelOrder">取消订单</button>
+    <button class="btn-ghost" bindtap="deleteOrder">删除记录</button>
+    <button class="btn-ghost" bindtap="backToHome">返回订单列表</button>
+  </view>
+</view>

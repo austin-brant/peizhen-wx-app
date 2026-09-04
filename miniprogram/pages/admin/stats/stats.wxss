@@ -30,6 +30,46 @@
   color: #9ca3af;
 }
 
+/* 自定义时间段选择 */
+.custom-range {
+  display: flex;
+  align-items: center;
+  margin-top: 16rpx;
+}
+
+.custom-range picker {
+  flex: 1;
+  display: block;
+}
+
+.range-pick {
+  text-align: center;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+  color: #4b5563;
+  background: #f9fafb;
+  border-radius: 12rpx;
+  white-space: nowrap;
+}
+
+.range-sep {
+  padding: 0 14rpx;
+  font-size: 26rpx;
+  color: #9ca3af;
+}
+
+.range-btn {
+  margin-left: 14rpx;
+  font-size: 26rpx;
+  line-height: 2.2;
+  padding: 0 28rpx;
+  background: #00b8a9;
+  color: #ffffff;
+  border-radius: 12rpx;
+}
+
+.range-btn::after { border: none; }
+
 .stat-cards { padding-bottom: 8rpx; }
 
 .stat-row {
@@ -134,4 +174,5 @@
 
 .ol-date { flex: 1.2; color: #4b5563; }
 .ol-name { flex: 1; color: #111827; text-align: center; }
+.ol-status { flex: 0.8; color: #9ca3af; text-align: center; font-size: 22rpx; }
 .ol-amount { flex: 1; color: #00b8a9; text-align: right; font-weight: 600; }

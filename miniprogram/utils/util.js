@@ -65,15 +65,25 @@ function hideLoading() {
   wx.hideLoading();
 }
 
-/** 订单状态展示 */
+/** 订单状态展示（pending 待确认 / confirmed 已确认 / completed 已完成 / cancelled 已取消） */
 function orderStatusText(o) {
-  if (o.status === 'cancelled') return { text: '已取消', cls: 'tag-cancel' };
-  if (o.status === 'finished') return { text: '已结清', cls: 'tag-done' };
-  if (o.status === 'completed') return { text: '待付尾款', cls: 'tag-tail' };
-  if (o.status === 'deposit_paid') return { text: '已付定金', cls: 'tag-deposit' };
-  return { text: '待支付定金', cls: 'tag-pending' };
+  const s = o.status;
+  if (s === 'cancelled') return { text: '已取消', cls: 'tag-cancel' };
+  if (s === 'completed' || s === 'finished') return { text: '已完成', cls: 'tag-done' };
+  if (s === 'pending') return { text: '待确认', cls: 'tag-pending' };
+  if (s === 'confirmed' || s === 'deposit_paid') return { text: '已确认', cls: 'tag-confirmed' };
+  return { text: '已预约', cls: 'tag-confirmed' };
+}
+
+/** 订单状态的短文案（用于时段格子等紧凑场景） */
+function orderStatusLabel(o) {
+  const s = o.status;
+  if (s === 'cancelled') return '已取消';
+  if (s === 'completed' || s === 'finished') return '已完成';
+  if (s === 'pending') return '待确认';
+  return '已确认';
 }
 
 module.exports = {
-  pad, fmtDate, addDays, weekText, monthDayText, dateList, money, toast, confirm, loading, hideLoading, orderStatusText
+  pad, fmtDate, addDays, weekText, monthDayText, dateList, money, toast, confirm, loading, hideLoading, orderStatusText, orderStatusLabel
 };

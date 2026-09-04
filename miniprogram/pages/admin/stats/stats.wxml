@@ -10,7 +10,22 @@
     <view class="period-bar">
       <view wx:for="{{periods}}" wx:key="key" class="period-item {{period === item.key ? 'active' : ''}}" bindtap="changePeriod" data-key="{{item.key}}">{{item.label}}</view>
     </view>
-    <view class="date-range">{{rangeText}}</view>
+    <view class="filter-bar status-bar">
+      <view wx:for="{{statusFilters}}" wx:key="key" class="filter-item {{statusFilter === item.key ? 'active' : ''}}" bindtap="changeStatusFilter" data-key="{{item.key}}">{{item.label}}</view>
+    </view>
+    <block wx:if="{{period === 'custom'}}">
+      <view class="custom-range">
+        <picker mode="date" value="{{customStart}}" end="{{customEnd}}" bindchange="changeCustomStart">
+          <view class="range-pick">{{customStart || '开始日期'}}</view>
+        </picker>
+        <text class="range-sep">至</text>
+        <picker mode="date" value="{{customEnd}}" start="{{customStart}}" bindchange="changeCustomEnd">
+          <view class="range-pick">{{customEnd || '结束日期'}}</view>
+        </picker>
+        <button class="range-btn" bindtap="loadStats">查询</button>
+      </view>
+    </block>
+    <view class="date-range" wx:else>{{rangeText}}</view>
   </view>
 
   <view class="card stat-cards">
@@ -18,11 +33,6 @@
       <view class="stat-cell"><text class="num">{{stats.orderCount}}</text><text class="label">预约单数</text></view>
       <view class="stat-cell"><text class="num">{{stats.totalHours}}</text><text class="label">服务时长(小时)</text></view>
       <view class="stat-cell"><text class="num">¥{{stats.totalAmount}}</text><text class="label">订单金额</text></view>
-    </view>
-    <view class="stat-row sub-row">
-      <view class="stat-cell"><text class="num">¥{{stats.depositReceived}}</text><text class="label">已收定金</text></view>
-      <view class="stat-cell"><text class="num">¥{{stats.tailReceived}}</text><text class="label">已收尾款</text></view>
-      <view class="stat-cell"><text class="num">¥{{stats.pendingTail}}</text><text class="label">待收尾款</text></view>
     </view>
   </view>
 
@@ -51,6 +61,7 @@
       <view wx:for="{{orders}}" wx:key="id" class="order-line">
         <text class="ol-date">{{item.date}}</text>
         <text class="ol-name">{{item.clientName}}</text>
+        <text class="ol-status">{{item.statusText}}</text>
         <text class="ol-amount">¥{{item.price}}</text>
       </view>
     </view>

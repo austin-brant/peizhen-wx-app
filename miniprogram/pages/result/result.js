@@ -3,23 +3,13 @@ const util = require('../../utils/util.js');
 
 Page({
   data: {
-    type: '',
-    amount: 0,
     orderId: '',
-    title: '',
-    tip: '',
     order: null
   },
 
   onLoad(options) {
-    const type = options.type || 'deposit';
-    const amount = options.amount || 0;
     const orderId = options.orderId || '';
-    const title = type === 'tail' ? '尾款支付成功' : '定金支付成功';
-    const tip = type === 'tail'
-      ? '全部费用已结清，感谢您的信任。'
-      : '预约已成功，请按时就诊。陪诊师会与您联系。';
-    this.setData({ type, amount, orderId, title, tip });
+    this.setData({ orderId });
     if (orderId) this.loadOrder(orderId);
   },
 

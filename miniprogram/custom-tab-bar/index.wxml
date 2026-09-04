@@ -1,0 +1,14 @@
+<view class="tab-bar">
+  <block wx:for="{{list}}" wx:key="pagePath">
+    <view
+      class="tab-item"
+      wx:if="{{index < 2 || isAdmin}}"
+      data-index="{{index}}"
+      data-path="{{item.pagePath}}"
+      bindtap="switchTab"
+    >
+      <image class="tab-icon" src="{{selected === index ? item.iconOn : item.icon}}" />
+      <text class="tab-text {{selected === index ? 'on' : ''}}">{{item.text}}</text>
+    </view>
+  </block>
+</view>

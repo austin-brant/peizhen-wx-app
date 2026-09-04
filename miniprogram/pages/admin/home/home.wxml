@@ -1,4 +1,4 @@
-<view class="page">
+<view class="page tab-page">
   <!-- 顶部导航 -->
   <view class="admin-nav">
     <view class="nav-item active">订单</view>
@@ -11,6 +11,7 @@
     <view class="summary-title">本页概览</view>
     <view class="summary-row">
       <view class="summary-cell"><text class="num">{{summary.count}}</text><text class="label">订单</text></view>
+      <view class="summary-cell"><text class="num" wx:if="{{summary.pending}}">{{summary.pending}}</text><text class="num" wx:else>0</text><text class="label">待确认</text></view>
       <view class="summary-cell"><text class="num">{{summary.hours}}</text><text class="label">时长(小时)</text></view>
       <view class="summary-cell"><text class="num">¥{{summary.amount}}</text><text class="label">金额</text></view>
     </view>
@@ -19,18 +20,26 @@
   <view class="card">
     <view class="filter-bar">
       <view wx:for="{{filters}}" wx:key="key" class="filter-item {{filter === item.key ? 'active' : ''}}" bindtap="changeFilter" data-key="{{item.key}}">{{item.label}}</view>
+      <picker mode="date" value="{{pickedDate || today}}" bindchange="changePickDate">
+        <view class="filter-item cal {{filter === 'pick' ? 'active' : ''}}">{{filter === 'pick' ? pickedShort : '选日期'}}</view>
+      </picker>
+    </view>
+    <view class="filter-bar status-bar">
+      <view wx:for="{{statusFilters}}" wx:key="key" class="filter-item {{statusFilter === item.key ? 'active' : ''}}" bindtap="changeStatusFilter" data-key="{{item.key}}">{{item.label}}</view>
     </view>
     <view wx:if="{{orders.length}}">
-      <view wx:for="{{orders}}" wx:key="id" class="order-row">
+      <view wx:for="{{orders}}" wx:key="id" class="order-row" bindtap="goDetail" data-id="{{item.id}}">
         <view class="order-main">
-          <view class="order-time">{{item.date}} {{item.start}}-{{item.end}}</view>
-          <view class="order-info">{{item.hospital}} · {{item.clientName}} · {{item.clientPhone}}</view>
-          <view class="order-amount">¥{{item.price}}（定金¥{{item.deposit}}）</view>
+          <view class="order-time">{{item.date}} {{item.start}}-{{item.end}}<text class="row-arrow"> ›</text></view>
+          <view class="order-info">{{item.hospital}} · {{item.forOthers ? (item.bookerName || '') + ' 代约 ' + item.clientName : item.clientName}} · {{item.bookerPhone || item.clientPhone}}</view>
+          <view class="order-amount">¥{{item.price}}<text class="order-dur" wx:if="{{item.durationHours}}"> · {{item.durationHours}}小时</text></view>
         </view>
         <view class="order-side">
           <view class="tag {{item.statusText.cls}}">{{item.statusText.text}}</view>
-          <button class="action-btn primary" wx:if="{{item.status === 'deposit_paid'}}" bindtap="completeOrder" data-id="{{item.id}}">标记完成</button>
-          <button class="action-btn danger" wx:if="{{item.status === 'pending' || item.status === 'deposit_paid'}}" bindtap="cancelOrder" data-id="{{item.id}}">取消</button>
+          <button class="action-btn confirm" wx:if="{{item.status === 'pending'}}" catchtap="confirmOrder" data-id="{{item.id}}">确认预约</button>
+          <button class="action-btn primary" wx:if="{{item.status === 'confirmed'}}" catchtap="completeOrder" data-id="{{item.id}}">标记完成</button>
+          <button class="action-btn danger" wx:if="{{item.status === 'pending' || item.status === 'confirmed'}}" catchtap="cancelOrder" data-id="{{item.id}}">取消</button>
+          <button class="action-btn delete" catchtap="deleteOrder" data-id="{{item.id}}">删除</button>
         </view>
       </view>
     </view>

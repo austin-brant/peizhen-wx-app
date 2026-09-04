@@ -1,11 +1,10 @@
 <view class="page">
   <view class="result-box">
-    <view class="icon-circle {{type === 'tail' ? 'tail' : ''}}">
+    <view class="icon-circle">
       <view class="icon-check"></view>
     </view>
-    <view class="result-title">{{title}}</view>
-    <view class="result-amount">¥{{amount}}</view>
-    <view class="result-tip">{{tip}}</view>
+    <view class="result-title">预约已提交</view>
+    <view class="result-tip">预约已提交，等待陪诊师确认后生效。<br/>确认后陪诊师会尽快与您联系。</view>
   </view>
 
   <view class="card info" wx:if="{{order}}">

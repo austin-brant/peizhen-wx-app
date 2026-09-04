@@ -1,0 +1,67 @@
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50rpx 30rpx 40rpx;
+}
+
+.about-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00b8a9, #4dd6c9);
+  color: #ffffff;
+  font-size: 52rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(0, 184, 169, 0.25);
+  overflow: hidden;
+}
+
+/* image 作为头像时去掉 flex 布局，交给 mode=aspectFill 裁剪 */
+image.about-avatar {
+  display: block;
+}
+
+.about-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 20rpx;
+}
+
+.about-sub {
+  font-size: 24rpx;
+  color: #8a94a6;
+  margin-top: 8rpx;
+}
+
+.md-body {
+  padding: 30rpx;
+  overflow: hidden;
+}
+
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 30rpx;
+}
+
+.empty-icon {
+  font-size: 64rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #4b5563;
+  margin-top: 20rpx;
+}
+
+.empty-sub {
+  font-size: 24rpx;
+  color: #9aa3b2;
+  margin-top: 10rpx;
+}

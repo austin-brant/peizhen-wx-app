@@ -56,6 +56,22 @@
   border-radius: 999rpx;
 }
 
+.list-edit-tag {
+  font-size: 20rpx;
+  color: #047857;
+  padding: 4rpx 12rpx;
+  background: #d1fae5;
+  border-radius: 999rpx;
+  margin-right: 12rpx;
+}
+
+/* 白名单按钮：单独占满一行 */
+.whitelist-btn {
+  flex: 1;
+  width: auto;
+  margin-left: 0;
+}
+
 .list-add {
   display: flex;
   align-items: center;
@@ -86,6 +102,11 @@
 
 .list-add-btn::after { border: none; }
 
+/* 折扣添加：两个输入框 + 按钮 */
+.discount-add .list-add-input + .list-add-input {
+  margin-left: 16rpx;
+}
+
 /* ============ 管理员绑定提示 ============ */
 .bind-tip {
   margin-top: 16rpx;
@@ -95,4 +116,97 @@
   font-size: 24rpx;
   color: #0f766e;
   line-height: 1.5;
+}
+
+/* 陪诊师介绍 Markdown 编辑区 */
+.md-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 26rpx;
+  line-height: 1.7;
+  text-align: left;
+  background: #f8fafb;
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+
+/* ============ 陪诊师头像设置 ============ */
+.avatar-item {
+  align-items: center;
+}
+
+.avatar-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-btn {
+  flex: none;
+  width: 120rpx;
+  height: 120rpx;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f0fffd;
+  border: 2rpx dashed #00b8a9;
+  line-height: 1;
+}
+
+.avatar-btn::after { border: none; }
+
+.avatar-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  display: block;
+}
+
+.avatar-img.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #00b8a9;
+  background: #f0fffd;
+}
+
+.avatar-actions {
+  display: flex;
+  margin-left: 24rpx;
+}
+
+.avatar-act-btn {
+  flex: none;
+  width: auto;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 24rpx;
+  margin: 0 16rpx 0 0;
+  font-size: 24rpx;
+  color: #00b8a9;
+  background: #f0fffd;
+  border: 2rpx solid #00b8a9;
+  border-radius: 999rpx;
+  text-align: center;
+}
+
+.avatar-act-btn::after { border: none; }
+
+.avatar-act-btn.clear {
+  color: #9ca3af;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+/* 介绍插图上传按钮 */
+.upload-row {
+  margin-top: 20rpx;
+}
+
+.upload-btn {
+  height: 76rpx;
+  line-height: 72rpx;
+  font-size: 26rpx;
 }

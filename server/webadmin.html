@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>陪诊预约 · 管理员管理</title>
+<style>
+  :root {
+    --brand: #00b8a9;
+    --brand-dark: #009688;
+    --danger: #e54d42;
+    --text: #1f2733;
+    --muted: #8a94a6;
+    --line: #e6e9ef;
+    --bg: #f4f6f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 16px rgba(31, 39, 51, .06);
+    margin-bottom: 16px;
+  }
+  .brand-line { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand); flex: none; }
+  h1 { font-size: 19px; margin: 0; font-weight: 600; letter-spacing: .3px; }
+  .sub { color: var(--muted); font-size: 13px; margin: 2px 0 0; }
+
+  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  label { display: block; font-size: 13px; color: #59637a; margin: 14px 0 6px; font-weight: 500; }
+  input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    background: #fbfcfe;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--brand);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 184, 169, .12);
+  }
+  input.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    border: none;
+    border-radius: 9px;
+    padding: 11px 18px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background .15s, opacity .15s;
+  }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .btn-primary { background: var(--brand); color: #fff; width: 100%; margin-top: 20px; }
+  .btn-primary:hover:not(:disabled) { background: var(--brand-dark); }
+  .btn-ghost { background: #f1f3f7; color: #59637a; }
+  .btn-ghost:hover { background: #e8ebf1; }
+  .btn-del { background: #fdeceb; color: var(--danger); padding: 7px 14px; font-size: 13px; }
+  .btn-del:hover { background: #fbdcda; }
+
+  .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .row .grow { flex: 1 1 200px; min-width: 0; }
+  .row .grow label { margin-top: 0; }
+
+  .alert { padding: 10px 13px; border-radius: 9px; font-size: 13px; margin-top: 14px; display: none; }
+  .alert.err { background: #fdeceb; color: #c0392b; display: block; }
+  .alert.ok { background: #e8f7f5; color: #00796b; display: block; }
+
+  .list { margin-top: 6px; }
+  .item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line);
+  }
+  .item:last-child { border-bottom: none; }
+  .item-main { min-width: 0; flex: 1; }
+  .item-openid {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px; color: var(--text); word-break: break-all;
+  }
+  .item-label { font-size: 12px; color: var(--brand-dark); margin-top: 3px; }
+  .item-label.none { color: var(--muted); }
+  .empty { color: var(--muted); text-align: center; padding: 28px 0; font-size: 13px; }
+
+  .tip {
+    background: #f7f9fc; border-left: 3px solid var(--brand);
+    padding: 11px 14px; border-radius: 0 8px 8px 0;
+    font-size: 12.5px; color: #59637a; margin-top: 16px; line-height: 1.7;
+  }
+  .count { font-size: 13px; color: var(--muted); }
+  .count b { color: var(--brand-dark); font-weight: 600; }
+  details { margin-top: 18px; }
+  summary { cursor: pointer; font-size: 13px; color: var(--muted); user-select: none; padding: 6px 0; }
+  summary:hover { color: var(--text); }
+  .muted { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ 登录 ============ -->
+  <div id="viewLogin" class="card" hidden>
+    <div class="brand-line"><span class="dot"></span><h1>管理员管理</h1></div>
+    <p class="sub">陪诊预约小程序 · 微信白名单维护</p>
+
+    <label for="inUser">账号</label>
+    <input id="inUser" autocomplete="username" placeholder="请输入账号" spellcheck="false">
+
+    <label for="inPass">密码</label>
+    <input id="inPass" type="password" autocomplete="current-password" placeholder="请输入密码">
+
+    <button id="btnLogin" class="btn-primary">登 录</button>
+    <div id="loginMsg" class="alert"></div>
+  </div>
+
+  <!-- ============ 管理面板 ============ -->
+  <div id="viewAdmin" hidden>
+
+    <div class="card">
+      <div class="brand-line"><span class="dot"></span><h1>管理员管理</h1></div>
+      <p class="sub">陪诊预约小程序 · 微信白名单维护</p>
+    </div>
+
+    <div class="card">
+      <div class="head-row">
+        <div style="font-weight:600">当前管理员</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="count">共 <b id="adminCount">0</b> 位</span>
+          <button id="btnRefresh" class="btn-ghost" style="padding:7px 14px;font-size:13px">刷新</button>
+          <button id="btnLogout" class="btn-ghost" style="padding:7px 14px;font-size:13px">退出</button>
+        </div>
+      </div>
+
+      <div id="adminList" class="list"></div>
+
+      <div class="tip">
+        <b>如何获取 openid：</b>让对方用微信打开小程序 → 进入「管理端登录」页，页面会显示其 openid，复制后粘贴到下方添加。<br>
+        白名单内的微信 + 正确的管理端密码，才能登录小程序管理端。
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:4px">添加管理员</div>
+      <div class="row" style="margin-top:12px">
+        <div class="grow">
+          <label for="inOpenid">微信 openid</label>
+          <input id="inOpenid" class="mono" placeholder="如 dev_7cdad62293dd49f2" spellcheck="false">
+        </div>
+        <div class="grow">
+          <label for="inLabel">备注名（选填）</label>
+          <input id="inLabel" placeholder="如 张护士" maxlength="20">
+        </div>
+      </div>
+      <button id="btnAdd" class="btn-primary" style="margin-top:16px">添加为管理员</button>
+      <div id="addMsg" class="alert"></div>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary>修改登录密码</summary>
+        <label for="inOldPw">原密码</label>
+        <input id="inOldPw" type="password" autocomplete="current-password">
+        <label for="inNewPw">新密码（至少 8 位）</label>
+        <input id="inNewPw" type="password" autocomplete="new-password">
+        <button id="btnChPw" class="btn-primary">确认修改</button>
+        <div id="pwMsg" class="alert"></div>
+      </details>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var KEY = 'pz_webadmin_token';
+  var token = '';
+  try { token = localStorage.getItem(KEY) || ''; } catch (e) { token = ''; }
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // HTML 转义：备注名/openid 会渲染进 DOM，必须转义防止 XSS
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function show(el, msg, isErr) {
+    if (!el) return;
+    if (!msg) { el.className = 'alert'; el.textContent = ''; return; }
+    el.className = 'alert ' + (isErr ? 'err' : 'ok');
+    el.textContent = msg;
+  }
+
+  function setView(logged) {
+    $('viewLogin').hidden = logged;
+    $('viewAdmin').hidden = !logged;
+  }
+
+  function logout() {
+    token = '';
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    setView(false);
+  }
+
+  // 统一请求封装：后端恒返回 HTTP 200，业务码在 body.code
+  function api(path, opts) {
+    opts = opts || {};
+    var headers = { 'Content-Type': 'application/json' };
+    if (token) headers['x-web-token'] = token;
+    return fetch(path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j && j.code === 0) return j.data || {};
+      var msg = (j && j.data && j.data.msg) || '请求失败';
+      if (/登录|未授权|过期/.test(msg)) logout();
+      throw new Error(msg);
+    });
+  }
+
+  function renderList(list) {
+    var box = $('adminList');
+    $('adminCount').textContent = (list || []).length;
+    if (!list || !list.length) {
+      box.innerHTML = '<div class="empty">暂无管理员，请在下方添加</div>';
+      return;
+    }
+    box.innerHTML = (list || []).map(function (it) {
+      var label = it.label
+        ? '<div class="item-label">' + esc(it.label) + '</div>'
+        : '<div class="item-label none">未设备注</div>';
+      return '<div class="item">' +
+        '<div class="item-main">' +
+          '<div class="item-openid">' + esc(it.openid) + '</div>' + label +
+        '</div>' +
+        '<button class="btn-del" data-openid="' + esc(it.openid) + '">删除</button>' +
+      '</div>';
+    }).join('');
+  }
+
+  function loadList() {
+    return api('/api/webadmin/admins').then(function (d) {
+      renderList(d.list);
+    });
+  }
+
+  // ---------- 登录 ----------
+  function doLogin() {
+    var u = $('inUser').value.trim();
+    var p = $('inPass').value;
+    if (!u || !p) return show($('loginMsg'), '请填写账号和密码', true);
+
+    var btn = $('btnLogin');
+    btn.disabled = true; btn.textContent = '登录中...';
+    show($('loginMsg'), '');
+
+    api('/api/webadmin/login', { method: 'POST', body: { username: u, password: p } })
+      .then(function (d) {
+        token = d.token;
+        try { localStorage.setItem(KEY, token); } catch (e) {}
+        $('inPass').value = '';
+        setView(true);
+        return loadList();
+      })
+      .catch(function (e) { show($('loginMsg'), e.message, true); })
+      .then(function () { btn.disabled = false; btn.textContent = '登 录'; });
+  }
+
+  // ---------- 添加 ----------
+  function doAdd() {
+    var openid = $('inOpenid').value.trim();
+    var label = $('inLabel').value.trim();
+    if (!openid) return show($('addMsg'), '请填写 openid', true);
+
+    var btn = $('btnAdd');
+    btn.disabled = true; btn.textContent = '添加中...';
+    show($('addMsg'), '');
+
+    api('/api/webadmin/admins', { method: 'POST', body: { openid: openid, label: label } })
+      .then(function (d) {
+        renderList(d.list);
+        $('inOpenid').value = ''; $('inLabel').value = '';
+        show($('addMsg'), '已添加为管理员', false);
+      })
+      .catch(function (e) { show($('addMsg'), e.message, true); })
+      .then(function () { btn.disabled = false; btn.textContent = '添加为管理员'; });
+  }
+
+  // ---------- 删除（事件委托） ----------
+  $('adminList').addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.btn-del') : null;
+    if (!btn) return;
+    var openid = btn.getAttribute('data-openid');
+    if (!openid) return;
+    if (!confirm('确定删除该管理员吗？\n\n' + openid + '\n\n删除后该微信将无法登录小程序管理端。')) return;
+
+    btn.disabled = true;
+    api('/api/webadmin/admins/' + encodeURIComponent(openid), { method: 'DELETE' })
+      .then(function (d) { renderList(d.list); })
+      .catch(function (e) { alert(e.message); })
+      .then(function () { btn.disabled = false; });
+  });
+
+  // ---------- 改密 ----------
+  function doChPw() {
+    var oldPw = $('inOldPw').value;
+    var newPw = $('inNewPw').value;
+    if (!oldPw || !newPw) return show($('pwMsg'), '请填写原密码和新密码', true);
+
+    var btn = $('btnChPw');
+    btn.disabled = true; btn.textContent = '提交中...';
+    show($('pwMsg'), '');
+
+    api('/api/webadmin/password', { method: 'POST', body: { oldPassword: oldPw, newPassword: newPw } })
+      .then(function () {
+        $('inOldPw').value = ''; $('inNewPw').value = '';
+        alert('密码修改成功，请使用新密码重新登录。');
+        logout();
+      })
+      .catch(function (e) { show($('pwMsg'), e.message, true); })
+      .then(function () { btn.disabled = false; btn.textContent = '确认修改'; });
+  }
+
+  // ---------- 绑定 ----------
+  $('btnLogin').addEventListener('click', doLogin);
+  $('btnAdd').addEventListener('click', doAdd);
+  $('btnChPw').addEventListener('click', doChPw);
+  $('btnLogout').addEventListener('click', logout);
+  $('btnRefresh').addEventListener('click', function () {
+    loadList().catch(function (e) { alert(e.message); });
+  });
+  ['inPass', 'inOpenid'].forEach(function (id) {
+    $(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { id === 'inPass' ? doLogin() : doAdd(); }
+    });
+  });
+
+  // 启动：有 token 先试拉列表，失败则回登录页
+  setView(false);
+  if (token) {
+    loadList().then(function () { setView(true); }).catch(function () { setView(false); });
+  }
+})();
+</script>
+</body>
+</html>

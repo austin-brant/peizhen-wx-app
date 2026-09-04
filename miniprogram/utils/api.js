@@ -45,5 +45,6 @@ function request(method, url, data, opts) {
 const get = (url, opts) => request('GET', url, null, opts);
 const post = (url, data, opts) => request('POST', url, data, opts);
 const put = (url, data, opts) => request('PUT', url, data, opts);
+const del = (url, opts) => request('DELETE', url, null, opts);
 
-module.exports = { get, post, put, request };
+module.exports = { get, post, put, del, request };

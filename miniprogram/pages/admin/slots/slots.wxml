@@ -7,12 +7,20 @@
   </view>
 
   <view class="card">
-    <view class="date-strip">
-      <view wx:for="{{dates}}" wx:key="date" class="date-item {{selected === item.date ? 'active' : ''}}" bindtap="selectDate" data-date="{{item.date}}">
+    <view class="strip-tip">左右滑动查看更多日期，或点下方日历任选一天</view>
+    <scroll-view scroll-x class="date-strip" scroll-with-animation enhanced show-scrollbar="{{false}}" scroll-into-view="{{scrollInto}}">
+      <view wx:for="{{dates}}" wx:key="date" id="d-{{item.date}}" class="date-item {{selected === item.date ? 'active' : ''}}" bindtap="selectDate" data-date="{{item.date}}">
         <text class="dw">{{item.week}}</text>
         <text class="dd">{{item.day}}</text>
       </view>
-    </view>
+    </scroll-view>
+    <picker mode="date" value="{{selected}}" bindchange="changePickDate">
+      <view class="cal-row">
+        <text class="cal-icon">日历</text>
+        <text class="cal-text">{{selected}}</text>
+        <text class="cal-arrow">›</text>
+      </view>
+    </picker>
   </view>
 
   <view class="card">
@@ -21,10 +29,14 @@
       <text class="sub">{{availableCount}} / {{daySlots.length}} 可约</text>
     </view>
 
+    <view class="filter-bar status-bar">
+      <view wx:for="{{statusFilters}}" wx:key="key" class="filter-item {{statusFilter === item.key ? 'active' : ''}}" bindtap="changeStatusFilter" data-key="{{item.key}}">{{item.label}}</view>
+    </view>
+
     <view wx:if="{{daySlots.length}}">
-      <view wx:for="{{daySlots}}" wx:key="start" class="slot {{item.status}} {{pendingToggle === item.start ? 'pending' : ''}}" bindtap="toggleSlot" data-item="{{item}}">
+      <view wx:for="{{daySlots}}" wx:key="start" class="slot {{item.status}} {{item.dim ? 'dim' : ''}} {{pendingToggle === item.start ? 'pending' : ''}}" bindtap="slotTap" data-item="{{item}}">
         <text class="slot-time">{{item.start}}-{{item.end}}</text>
-        <text class="slot-label">{{item.status === 'available' ? '可约' : (item.status === 'unavailable' ? '不可约' : '已约')}}</text>
+        <text class="slot-label">{{item.label}}</text>
       </view>
     </view>
     <view class="empty" wx:else>请先在【设置】中配置工作时间段</view>

@@ -64,6 +64,42 @@ async function ensureLoginWithAdmin() {
   return { openid, isAdmin };
 }
 
+let retryPending = null;
+
+/**
+ * 强制微信登录：登录失败时弹窗引导用户重试，直到成功或用户明确拒绝。
+ * 用于「进入小程序必须授权微信登录」「下单前必须已登录」等场景。
+ * @returns {Promise<string>} openid
+ */
+function ensureLoginWithRetry() {
+  const cached = getOpenid();
+  if (cached) return Promise.resolve(cached);
+  if (retryPending) return retryPending;
+  retryPending = ensureLogin()
+    .catch(() => new Promise((resolve, reject) => {
+      wx.showModal({
+        title: '需要微信登录',
+        content: '授权微信登录后才能使用预约服务，请点击「重新登录」继续',
+        confirmText: '重新登录',
+        cancelText: '暂不登录',
+        confirmColor: '#00b8a9',
+        success(res) {
+          if (res.confirm) {
+            retryPending = null; // 先释放，避免递归复用自身造成死锁
+            resolve(ensureLoginWithRetry());
+          } else {
+            reject(new Error('未完成微信登录'));
+          }
+        },
+        fail() {
+          reject(new Error('未完成微信登录'));
+        }
+      });
+    }))
+    .finally(() => { retryPending = null; });
+  return retryPending;
+}
+
 /** 退出登录（清除本地身份） */
 function logout() {
   wx.removeStorageSync('openid');
@@ -71,4 +107,4 @@ function logout() {
   wx.removeStorageSync('admin_token');
 }
 
-module.exports = { getOpenid, isLoggedIn, getUserInfo, ensureLogin, ensureLoginWithAdmin, logout };
+module.exports = { getOpenid, isLoggedIn, getUserInfo, ensureLogin, ensureLoginWithRetry, ensureLoginWithAdmin, logout };

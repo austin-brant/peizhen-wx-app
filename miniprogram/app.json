@@ -3,11 +3,13 @@
     "pages/index/index",
     "pages/orders/orders",
     "pages/book/book",
+    "pages/about/about",
     "pages/order-detail/order-detail",
     "pages/result/result",
     "pages/admin/login/login",
     "pages/admin/home/home",
     "pages/admin/slots/slots",
+    "pages/admin/order-detail/order-detail",
     "pages/admin/stats/stats",
     "pages/admin/settings/settings"
   ],
@@ -19,6 +21,7 @@
     "backgroundTextStyle": "light"
   },
   "tabBar": {
+    "custom": true,
     "color": "#8a94a6",
     "selectedColor": "#00b8a9",
     "backgroundColor": "#ffffff",
@@ -35,6 +38,12 @@
         "text": "我的",
         "iconPath": "images/tab-me.png",
         "selectedIconPath": "images/tab-me-on.png"
+      },
+      {
+        "pagePath": "pages/admin/home/home",
+        "text": "管理",
+        "iconPath": "images/tab-admin.png",
+        "selectedIconPath": "images/tab-admin-on.png"
       }
     ]
   },

@@ -1,3 +1,22 @@
+/* 页面骨架：内容自适应，底栏 sticky 吸附（悬浮于自定义 tabBar 之上，不遮挡内容） */
+page {
+  padding-bottom: 0;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+.safe-gap {
+  height: 24rpx;
+}
+
 .service-card {
   background: #ffffff;
   border-radius: 20rpx;
@@ -22,7 +41,38 @@
 .service-person {
   font-size: 26rpx;
   color: #6b7280;
-  margin-top: 6rpx;
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* 陪诊师头像（服务信息卡内，圆形小头像） */
+.escort-avatar {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+  background: #f0fffd;
+  flex: none;
+}
+
+.person-name {
+  margin-right: 14rpx;
+}
+
+/* 陪诊师「查看介绍」按钮：明显可点击的胶囊样式 */
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #00b8a9;
+  background: #f0fffd;
+  border: 2rpx solid #00b8a9;
+  border-radius: 999rpx;
+  padding: 4rpx 18rpx;
+  line-height: 1.4;
 }
 
 .admin-link {
@@ -38,6 +88,12 @@
   font-size: 28rpx;
   color: #4b5563;
   font-weight: 600;
+}
+
+.service-discount {
+  font-size: 24rpx;
+  color: #fa5252;
+  font-weight: 400;
 }
 
 .dot-sep {
@@ -167,14 +223,19 @@
 .dot.unavailable { background: #d1d5db; }
 .dot.booked { background: #fa5252; }
 
+/* 底栏：sticky 吸附（bottom 偏移自定义 tabBar 高度，按钮不被 tabBar 盖住），
+   同时占据文档流高度，不遮挡页面内容 */
 .bottom-bar {
-  position: fixed;
+  position: sticky;
+  bottom: calc(100rpx + env(safe-area-inset-bottom));
   left: 0;
   right: 0;
-  bottom: 0;
+  z-index: 20;
+  flex: none;
   background: #ffffff;
-  padding: 24rpx 30rpx calc(24rpx + env(safe-area-inset-bottom));
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.04);
+  padding: 24rpx 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;

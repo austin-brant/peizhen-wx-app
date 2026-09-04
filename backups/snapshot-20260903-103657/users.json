@@ -1,0 +1,48 @@
+{
+  "list": [
+    {
+      "openid": "dev_openid",
+      "nickname": "",
+      "avatarUrl": "",
+      "createdAt": "2026-08-31T10:25:10.003Z",
+      "lastLoginAt": "2026-08-31T10:25:31.654Z"
+    },
+    {
+      "openid": "dev_bbb245c1dcb85db7",
+      "nickname": "",
+      "avatarUrl": "",
+      "createdAt": "2026-08-31T10:28:17.034Z",
+      "lastLoginAt": "2026-08-31T10:28:17.035Z"
+    },
+    {
+      "openid": "dev_e0c52cbe93df1185",
+      "nickname": "",
+      "avatarUrl": "",
+      "createdAt": "2026-08-31T10:28:17.058Z",
+      "lastLoginAt": "2026-08-31T10:28:17.058Z"
+    },
+    {
+      "openid": "dev_c5102cd050db81dd",
+      "nickname": "YXC",
+      "avatarUrl": "/api/uploads/IMGmtk4onb65ue7z.jpeg",
+      "createdAt": "2026-08-31T11:24:37.663Z",
+      "lastLoginAt": "2026-09-02T13:24:49.808Z",
+      "name": "孙悟空",
+      "phone": "12345678901"
+    },
+    {
+      "openid": "dev_7cdad62293dd49f2",
+      "nickname": "",
+      "avatarUrl": "",
+      "createdAt": "2026-08-31T11:40:58.539Z",
+      "lastLoginAt": "2026-08-31T11:40:58.539Z"
+    },
+    {
+      "openid": "dev_14b268e7fb27a4a7",
+      "nickname": "",
+      "avatarUrl": "",
+      "createdAt": "2026-09-01T09:50:30.899Z",
+      "lastLoginAt": "2026-09-01T09:50:30.899Z"
+    }
+  ]
+}
